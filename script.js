@@ -8,6 +8,8 @@ fetch('data.json')
     })
     .then(data => {
         //console.log(data)
+
+
         let search = document.getElementById('search');
         let name = data.map(e => e.name)
         let ingr = data.map(e => e.ingredients)

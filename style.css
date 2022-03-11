@@ -243,9 +243,14 @@ main{
     line-height: 21.6px;
 }
 
+.ul_post{
+    width: 47%;
+    font-size: 12px;
+}
+
 .bottom_post{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
 }
 
@@ -288,4 +293,6 @@ main{
     font-weight: 400;
     text-align: left;
     padding-right: 5px;
+
+    overflow: hidden;
 }
