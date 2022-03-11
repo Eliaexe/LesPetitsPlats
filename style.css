@@ -38,7 +38,7 @@ form input{
 .search{
     position: absolute;
     width: 32px;
-    top: 17.5%;
+    top: 16.5%;
     right: 10%;
 }
 
@@ -73,13 +73,26 @@ form input{
     background-color: #3282F7;
 }
 
+.button_blue{
+    border: 1px solid #3282F7;
+}
+
 .green{
     background-color: #68D9A4;
+}
+
+.button_green{
+    border: 1px solid #68D9A4;
 }
 
 .red{
     background-color: #ED6454;
 }
+
+.button_red{
+    border: 1px solid #ED6454;
+}
+
 
 .container_nav {
     display: inline-flex;
@@ -101,10 +114,34 @@ form input{
     margin-right: 20px;
     padding: 23px;
     display: flex;
+    flex-direction: column;
     font-size: 18px; 
     font-weight: 700;
     border: #ffff solid 1px;
     border-radius: 5px;
+    color: #ffff;
+}
+
+.flex-direction{
+    flex-direction: column;
+}
+
+.container-button .row{
+    flex-direction: row;
+}
+
+.container-button .result{
+    text-align: left;
+    display: none;
+}
+
+.container-button .result p{
+    margin: 1rem 0 0 0;
+}
+
+.placeholder::placeholder{
+    font-size: 18px; 
+    font-weight: 700;
     color: #ffff;
 }
 
