@@ -1,10 +1,39 @@
 const foodsList = document.getElementById('main');
 const searchBar = document.getElementById('search');
+
+const searchBlue = document.getElementById('blue');
+const searchGreen = document.getElementById('green');
+const searchRed = document.getElementById('red');
+
+const blueList = document.getElementById('blueRow');
+
 let data = [];
+
+
+
+
+searchBlue.addEventListener('keyup', (e) => {
+    const searchString = e.target.value;
+
+
+    const food = data.filter((food) => {
+        const ingredientsList = food.ingredients.map(e => e.ingredient);
+        let allingredients = [];
+
+            ingredientsList.forEach(e => {
+                allingredients.push('ciao');
+            });
+
+        return (
+            allingredients.includes(searchString)
+        );
+    });
+    displaysingle(food);
+})
+
 
 searchBar.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
-
     const food = data.filter((food) => {
         return (
             food.name.toLowerCase().includes(searchString)
@@ -12,6 +41,8 @@ searchBar.addEventListener('keyup', (e) => {
     });
     displayfoods(food);
 });
+
+
 
 const loadfoods = async () => {
     try {
@@ -56,5 +87,20 @@ const displayfoods = (foods) => {
         .join('');
     foodsList.innerHTML = htmlString;
 };
+
+const displaysingle = (single) => {
+    console.log(single.ingredients);
+
+    const html = single
+        .map((single) => {
+
+            return `
+            <p>${single.ingredients}</p>
+        `;
+        })
+        .join('');
+    blueList.innerHTML = html;
+}
+
 
 loadfoods();
