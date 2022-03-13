@@ -13,22 +13,24 @@ let data = [];
 
 
 searchBlue.addEventListener('keyup', (e) => {
-    const searchString = e.target.value;
-
+    const searchString = e.target.value.toLowerCase();
+    let allingredients = [];
 
     const food = data.filter((food) => {
         const ingredientsList = food.ingredients.map(e => e.ingredient);
-        let allingredients = [];
 
-            ingredientsList.forEach(e => {
-                allingredients.push('ciao');
-            });
+        ingredientsList.forEach(e => {
+            allingredients.push(e.toLowerCase());
+        });
 
-        return (
+        return (          
             allingredients.includes(searchString)
         );
     });
-    displaysingle(food);
+    console.log(allingredients);
+
+    console.log();
+    displayfoods(food);
 })
 
 
@@ -55,8 +57,18 @@ const loadfoods = async () => {
 };
 
 const displayfoods = (foods) => {
+    
     const htmlString = foods
         .map((food) => {
+        const ing = food.ingredients;
+/*
+for (let i = 0; i < ing.length; i++) {
+    const e = ing[i];
+}
+*/
+console.log(ing[6]);
+
+
             return `
 
     <div class="post">
@@ -71,10 +83,13 @@ const displayfoods = (foods) => {
             </div>
             <div class="bottom_post">
                 <ul class="ul_post">
-                    <li><h2>Lait de coco:</h2> <p>400ml</p></li>
-                    <li><h2>Jus de citron:</h2> <p>2</p></li>
-                    <li><h2>Créme de coco:</h2> <p>4 cuillères</p></li>
-                    <li><h2>Sucre:</h2> <p>20g</p></li>
+                ${food.id}
+
+                ${food.ingredients}
+                ${ing.quantity}
+                ${ing.unit}
+
+
                     <li><h2>Glaçons:</h2> <p>2</p></li>
                 </ul>
                 <p class="description">${food.description}</p>
@@ -89,7 +104,7 @@ const displayfoods = (foods) => {
 };
 
 const displaysingle = (single) => {
-    console.log(single.ingredients);
+    //console.log(single.ingredients);
 
     const html = single
         .map((single) => {
