@@ -61,12 +61,26 @@ const displayfoods = (foods) => {
     const htmlString = foods
         .map((food) => {
         const ing = food.ingredients;
-/*
-for (let i = 0; i < ing.length; i++) {
-    const e = ing[i];
-}
-*/
-console.log(ing[6]);
+
+        let x = foods.map(e => e.ingredients)
+        let y = []
+        let z = []
+
+            for (let u = 0; u < x.length; u++) {
+                const el = x[u];
+                y.push(el)
+            }
+
+            y.forEach(ele => {
+                for (let i = 0; i < ele.length; i++) {
+                    const elem = ele[i];
+                    
+                    z.push(elem)
+                }
+            });
+
+let ingredienti = x[2].map(e => e.ingredient)
+//console.log(y);
 
 
             return `
