@@ -10,28 +10,38 @@ const blueList = document.getElementById('blueRow');
 let data = [];
 
 
-
-
+/*
 searchBlue.addEventListener('keyup', (e) => {
+
     const searchString = e.target.value.toLowerCase();
-    let allingredients = [];
+    let y = [].sort()
 
     const food = data.filter((food) => {
-        const ingredientsList = food.ingredients.map(e => e.ingredient);
+        let x = food.ingredients
+        //console.table(x)
+        for (let i = 0; i < x.length; i++) {
+            const el = x[i].ingredient;
+            y.push(el.toLowerCase())
+        }
+    })
+    if (y.includes(searchString)) {
 
-        ingredientsList.forEach(e => {
-            allingredients.push(e.toLowerCase());
-        });
+        const z = document.getElementById('form')
 
-        return (          
-            allingredients.includes(searchString)
-        );
-    });
-    console.log(allingredients);
-
-    console.log();
-    displayfoods(food);
-})
+        const a =
+        `
+        <div class="tag">
+            <p>${searchString}</p>
+            <svg class="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/></svg>    
+        </div>
+        `
+        z.insertAdjacentHTML('beforeend', a
+        
+        
+        )
+    }
+    console.log(y.includes(searchString));
+}) */
 
 
 searchBar.addEventListener('keyup', (e) => {
@@ -42,6 +52,31 @@ searchBar.addEventListener('keyup', (e) => {
         );
     });
     displayfoods(food);
+});
+
+searchBlue.addEventListener('keyup', (e) => {
+    const searchString = e.target.value.toLowerCase();
+    const food = data.filter((food) => {
+        let x = food.ingredients
+        let y = []
+        x.forEach(e => {
+            y.push(e.ingredient.toLowerCase())
+        });
+
+        let txt = ""
+            for (let i in y) {
+                if (x[i].ingredient.toLowerCase().includes(searchString)){
+                    console.log(x[i].ingredient)
+                }
+                
+            }
+
+            console.log(txt);
+        /*return (
+            food.name.toLowerCase().includes(searchString)
+        );*/
+    });
+    //displayfoods(food);
 });
 
 
@@ -57,30 +92,22 @@ const loadfoods = async () => {
 };
 
 const displayfoods = (foods) => {
+    let allIngr = []
     
     const htmlString = foods
         .map((food) => {
         const ing = food.ingredients;
 
-        let x = foods.map(e => e.ingredients)
-        let y = []
-        let z = []
+        id1 = foods.filter(e => e.id == 5)
+        id1A = id1.map(e => e.ingredients)
 
-            for (let u = 0; u < x.length; u++) {
-                const el = x[u];
-                y.push(el)
-            }
+        var xyz = ing.map(function(i) {
+            return i.ingredient;
+        });
 
-            y.forEach(ele => {
-                for (let i = 0; i < ele.length; i++) {
-                    const elem = ele[i];
-                    
-                    z.push(elem)
-                }
-            });
-
-let ingredienti = x[2].map(e => e.ingredient)
-//console.log(y);
+        xyz.forEach(e => {
+            allIngr.push(e)
+        });
 
 
             return `
@@ -98,6 +125,12 @@ let ingredienti = x[2].map(e => e.ingredient)
             <div class="bottom_post">
                 <ul class="ul_post">
                 ${food.id}
+ 
+                ${ing[0].ingredient} ${ing[0].quantity} ${ing[0].unit}
+                ${xyz}
+                ${ing[2].ingredient}
+
+
 
                 ${food.ingredients}
                 ${ing.quantity}
@@ -115,6 +148,10 @@ let ingredienti = x[2].map(e => e.ingredient)
         })
         .join('');
     foodsList.innerHTML = htmlString;
+
+    ///console.log(allIngr);
+
+
 };
 
 const displaysingle = (single) => {
