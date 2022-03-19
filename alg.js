@@ -1,12 +1,15 @@
+// Place where the recepies are create
 const foodsList = document.getElementById('main');
+// Main search bar
 const searchBar = document.getElementById('search');
-
+// Child search bar
 const searchBlue = document.getElementById('blue');
 const searchGreen = document.getElementById('green');
 const searchRed = document.getElementById('red');
-
+// Where to display child resoult
 const blueList = document.getElementById('blueRow');
 
+// All data fetched
 let data = [];
 
 
@@ -24,7 +27,6 @@ searchBlue.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
     if (searchString.length >= 3) {
         let z = []
-        
 
         const food = data.filter((food) => {
             let x = food.ingredients
@@ -35,26 +37,49 @@ searchBlue.addEventListener('keyup', (e) => {
     
             let txt = ""
                 for (let i in y) {
-                    if (x[i].ingredient.toLowerCase().includes(searchString)){
-                        z.push(x[i].ingredient)
-                        blueList.innerHTML = ''
-        console.log([...new Set(z)]);
-
-                        blueList.innerHTML += 
-                        `
-                            <p>${x[i].ingredient}</p>
-                        `
+                    if (!blueList.innerText.toLocaleLowerCase().includes(x[i].ingredient.toLocaleLowerCase())) {
+                        if (x[i].ingredient.toLowerCase().includes(searchString)){
+                            z.push(x[i].ingredient)
+                            blueList.innerHTML += 
+                                `
+                                    <p>${x[i].ingredient}</p>                    
+                                `        
+                        }
                     }
-
                 };
-        });
+            });
 
     } else if (searchString < 3){
         blueList.innerHTML = ''
     }
-
-    //displaysingle(food);
 });
+
+searchGreen.addEventListener('keyup', (e) => {
+    const searchString = e.target.value.toLowerCase();
+    const food = data.filter((food) => {
+        return (
+            food.appliance.toLowerCase().includes(searchString)
+        )
+    })
+
+console.log(food);
+})
+
+searchRed.addEventListener('keyup', (e) => {
+    const searchString = e.target.value.toLowerCase();
+    let y = [] 
+
+    const food = data.filter((food) => {
+        let x = food.ustensils
+        let z = [...new Set(y.sort())]
+
+        for (let i = 0; i < x.length; i++) {
+            const el = x[i];
+            y.push(el.toLowerCase())
+        }
+        console.log(z.includes(searchString))        
+    })
+})
 
 
 
