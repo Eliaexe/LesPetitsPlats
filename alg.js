@@ -8,10 +8,10 @@ const searchGreen = document.getElementById('green');
 const searchRed = document.getElementById('red');
 // Where to display child resoult
 const blueList = document.getElementById('blueRow');
+const greenList = document.getElementById('greenRow');
 
 // All data fetched
 let data = [];
-
 
 searchBar.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
@@ -56,13 +56,31 @@ searchBlue.addEventListener('keyup', (e) => {
 
 searchGreen.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
+    let y = []    
     const food = data.filter((food) => {
+        let x = food.appliance
+        let z = [...new Set(y)]
+
+        if (x.toLowerCase().includes(searchString)) {
+            y.push(x.toLowerCase())
+        }
+
+        if (searchString.length >= 3) {
+            for (let i = 0; i < z.length; i++) {
+                const el = z[i];
+                console.log(el);
+            }
+console.log(z);
+            //console.log(greenList.innerText.includes('blender'));
+        }
         return (
             food.appliance.toLowerCase().includes(searchString)
         )
-    })
 
-console.log(food);
+    
+
+    })
+// console.log(food);
 })
 
 searchRed.addEventListener('keyup', (e) => {
