@@ -57,30 +57,34 @@ searchBlue.addEventListener('keyup', (e) => {
 searchGreen.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
     let y = []    
+    
     const food = data.filter((food) => {
         let x = food.appliance
         let z = [...new Set(y)]
 
-        if (x.toLowerCase().includes(searchString)) {
+        if (!z.includes(x.toLowerCase())) {
             y.push(x.toLowerCase())
         }
 
         if (searchString.length >= 3) {
             for (let i = 0; i < z.length; i++) {
                 const el = z[i];
-                console.log(el);
+                if (el.includes(searchString)) {
+                    if (!greenList.innerText.includes(el)) {
+                        greenList.innerHTML += 
+                        `
+                            <p>${el}</p>                    
+                        `
+                    }
+                }
             }
-console.log(z);
-            //console.log(greenList.innerText.includes('blender'));
+        }  else if (searchString < 3){
+            greenList.innerHTML = ''
         }
         return (
             food.appliance.toLowerCase().includes(searchString)
         )
-
-    
-
     })
-// console.log(food);
 })
 
 searchRed.addEventListener('keyup', (e) => {
@@ -95,7 +99,7 @@ searchRed.addEventListener('keyup', (e) => {
             const el = x[i];
             y.push(el.toLowerCase())
         }
-        console.log(z.includes(searchString))        
+        //console.log(z.includes(searchString))        
     })
 })
 
