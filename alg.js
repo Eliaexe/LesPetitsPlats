@@ -9,6 +9,7 @@ const searchRed = document.getElementById('red');
 // Where to display child resoult
 const blueList = document.getElementById('blueRow');
 const greenList = document.getElementById('greenRow');
+const redList = document.getElementById('redRow');
 
 // All data fetched
 let data = [];
@@ -98,6 +99,21 @@ searchRed.addEventListener('keyup', (e) => {
         for (let i = 0; i < x.length; i++) {
             const el = x[i];
             y.push(el.toLowerCase())
+        }
+        if (searchString.length >= 3) {
+            for (let i = 0; i < z.length; i++) {
+                const el = z[i];
+                if (el.includes(searchString)) {
+                    if (!redList.innerText.includes(el)) {
+                        redList.innerHTML += 
+                        `
+                            <p>${el}</p>                    
+                        `
+                    }
+                }
+            }
+        }  else if (searchString < 3){
+            redList.innerHTML = ''
         }
         //console.log(z.includes(searchString))        
     })
