@@ -48,7 +48,7 @@ form input{
     justify-content: space-between;
     background-color: #3282F7;
     padding: 0 20px;
-    margin: 25px 0;
+    margin: 20px 0;
     border-radius: 5px;
     
 }
@@ -65,8 +65,8 @@ form input{
     filter: invert(97%) sepia(10%) saturate(0%) hue-rotate(90deg) brightness(104%) contrast(104%);
 }
 
-.nav{
-    display: initial;
+#search{
+    margin-bottom: 1rem;
 }
 
 .blue{

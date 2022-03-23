@@ -11,7 +11,7 @@ const blueList = document.getElementById('blueRow');
 const greenList = document.getElementById('greenRow');
 const redList = document.getElementById('redRow');
 // Where to display result for single search
-let multicolor = document.getElementById('form');
+let multicolor = document.getElementById('colorSort');
 // All data fetched
 let data = [];
 
@@ -42,8 +42,7 @@ searchBlue.addEventListener('keyup', (e) => {
                     if (!blueList.innerText.toLocaleLowerCase().includes(x[i].ingredient.toLocaleLowerCase())) {
                         if (x[i].ingredient.toLowerCase().includes(searchString)){
                             z.push(x[i].ingredient)
-                            addTag(searchBlue, blueList)
-
+                            addTag(searchBlue, blueList, 'blue')
                             blueList.innerHTML += 
                                 `
                                     <p>${x[i].ingredient}</p>                    
@@ -75,7 +74,7 @@ searchGreen.addEventListener('keyup', (e) => {
                 const el = z[i];
                 if (el.includes(searchString)) {
                     if (!greenList.innerText.includes(el)) {
-
+                        addTag(searchGreen, greenList, 'green')
                         greenList.innerHTML += 
                         `
                             <p>${el}</p>                    
@@ -109,6 +108,7 @@ searchRed.addEventListener('keyup', (e) => {
                 const el = z[i];
                 if (el.includes(searchString)) {
                     if (!redList.innerText.includes(el)) {
+                        addTag(searchRed, redList, 'red')
                         redList.innerHTML += 
                         `
                             <p>${el}</p>                    
@@ -124,32 +124,33 @@ searchRed.addEventListener('keyup', (e) => {
 })
 
 let searchs = {
-    sea: [searchBlue, searchGreen, searchRed],
-    li: [blueList, greenList, redList]
+    blue: [searchBlue, blueList],
+    green: [searchGreen, greenList],
+    red: [searchRed, redList]
 }
 
-function addTag(search, list) {
+function addTag(search, list, colore) {
     for (const key in searchs) {
         if (Object.hasOwnProperty.call(searchs, key)) {
             const e = searchs[key];
-            console.log(e);
+            e[0].addEventListener('keydown', () =>{
+                //console.log(e[1]);
+            } )
         }
     }
-    function model (text) {
+    function model (text, color) {
         return (
-
         `
-            <div class="tag">
+            <div class="tag ${color}">
                 <p>${text}</p>
                 <svg class="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/></svg>    
             </div>
         `
         )
     }
-
     search.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            multicolor.insertAdjacentHTML("beforeend", model(list.innerText)) 
+        if (e.key === 'Enter' && !multicolor.innerText.includes(list.innerText)) {
+            multicolor.insertAdjacentHTML("beforeend", model(list.innerText, colore))    
         }
     });
 }
