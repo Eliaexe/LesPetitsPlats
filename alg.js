@@ -167,33 +167,18 @@ const loadfoods = async () => {
 };
 
 const displayfoods = (foods) => {
-    let allIngr = []
-    
     const htmlString = foods
         .map((food) => {
-        const ing = food.ingredients;
-        const {name, time, description, ingredients, appliance, ustensils} = food
-
-       const cacca = function xxx(){
-            for (const key in ingredients) {
-                if (Object.hasOwnProperty.call(ingredients, key)) {
-                    const e = ingredients[key];
-                    return e
-                }
-            }
-        }
-        console.log(cacca);
-        var xyz = ing.map(function(i) {
-            return i.ingredient;
-        });
-
-
-
-        xyz.forEach(e => {
-            allIngr.push(e)
-        });
-
-            return `
+        const {id, name, time, description, ingredients, appliance, ustensils} = food
+        
+function putIngredient(params) {
+    for (let i = 0; i < ingredients.length; i++) {
+        const e = ingredients[i];
+        var {ingredient, quantity, unit } = e
+    }
+}
+        
+            return`
             <div class="post">
                 <div class="top_post"></div>
                 <div class="pad">
@@ -205,27 +190,15 @@ const displayfoods = (foods) => {
                         </div>
                     </div>
                     <div class="bottom_post">
-                        <ul class="ul_post">
-        
-                         ${ing[0].quantity} ${ing[0].unit}
-                            ${xyz}
+                        <ul class="ul_post" id="${id}">
                         
-
-
-
-
-                            <li><h2>Glaçons:</h2> <p>2</p></li>
                         </ul>
                         <p class="description">${description}</p>
                     </div>
                 </div>
-            </div>
-        `;
-        })
-        .join('');
+            </div>`;
+        }).join('');
     foodsList.innerHTML = htmlString;
-
-    ///console.log(allIngr);
 };
 
 loadfoods();
