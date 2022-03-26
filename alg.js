@@ -129,6 +129,24 @@ let searchs = {
     red: [searchRed, redList]
 }
 
+for (const i in searchs) {
+    if (Object.hasOwnProperty.call(searchs, i)) {
+        const e = searchs[i];
+        e[0].addEventListener('keyup', (r)  => {
+            const food = data.filter((food) => { 
+                const { ingredients, appliance, ustensils} = food
+                if (r.path[0].id == 'blue') {
+                    console.log(ingredients);
+                } if (r.path[0].id == 'green') {
+                    console.log(appliance);
+                } else if (r.path[0].id == 'red') {
+                    console.log(ustensils);
+                }  
+            })
+        })
+    }
+}
+
 function addTag(search, list, colore) {
     for (const key in searchs) {
         if (Object.hasOwnProperty.call(searchs, key)) {
@@ -151,7 +169,7 @@ function addTag(search, list, colore) {
     search.addEventListener('keypress', function (e) {
         if (e.key === 'Enter' && !multicolor.innerText.includes(list.innerText)) {
             multicolor.insertAdjacentHTML("beforeend", model(list.innerText, colore))
-            console.log(multicolor)
+            
         }
     });
 }
@@ -170,13 +188,13 @@ const displayfoods = (foods) => {
     const htmlString = foods
         .map((food) => {
         const {id, name, time, description, ingredients, appliance, ustensils} = food
-        
-function putIngredient(params) {
-    for (let i = 0; i < ingredients.length; i++) {
-        const e = ingredients[i];
-        var {ingredient, quantity, unit } = e
-    }
-}
+        //console.log(ingredients);
+        function putIngredient() {
+            for (let i = 0; i < ingredients.length; i++) {
+                const e = ingredients[i];
+                var {ingredient, quantity, unit } = e
+            }
+        }
         
             return`
             <div class="post">
