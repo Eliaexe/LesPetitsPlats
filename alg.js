@@ -133,14 +133,41 @@ for (const i in searchs) {
     if (Object.hasOwnProperty.call(searchs, i)) {
         const e = searchs[i];
         e[0].addEventListener('keyup', (r)  => {
+            let sortIngredient = []
+            let sortAppliance = []
+            let sortUtensils = []
+            
             const food = data.filter((food) => { 
-                const { ingredients, appliance, ustensils} = food
+                const { ingredients, appliance, ustensils } = food
+                
                 if (r.path[0].id == 'blue') {
-                    console.log(ingredients);
+
+                    let x = [...new Set(sortIngredient.sort())]
+                    ingredients.forEach(e => {
+                        if (!x.includes(e.ingredient.toLowerCase())) {
+                            sortIngredient.push(e.ingredient.toLowerCase())
+                        }
+                    });
+                    console.log(x);
+                    
                 } if (r.path[0].id == 'green') {
-                    console.log(appliance);
+
+                    let x = [...new Set(sortAppliance.sort())]
+                    if (!x.includes(appliance.toLowerCase())) {
+                        sortAppliance.push(appliance.toLowerCase())
+                    }                  
+                    console.log(x);
+
                 } else if (r.path[0].id == 'red') {
-                    console.log(ustensils);
+
+                    let x = [...new Set(sortUtensils.sort())]
+                    for (let i = 0; i < ustensils.length; i++) {
+                        const el = ustensils[i];
+                        if (!x.includes(el.toLowerCase())) {
+                            sortUtensils.push(el.toLowerCase())
+                        }
+                    }
+                    console.log(x);
                 }  
             })
         })
