@@ -107,6 +107,7 @@ searchRed.addEventListener('keyup', (e) => {
             for (let i = 0; i < z.length; i++) {
                 const el = z[i];
                 if (el.includes(searchString)) {
+                    console.log(el.includes(searchString)   );
                     if (!redList.innerText.includes(el)) {
                         addTag(searchRed, redList, 'red')
                         redList.innerHTML += 
@@ -129,52 +130,8 @@ let searchs = {
     red: [searchRed, redList]
 }
 
-for (const i in searchs) {
-    if (Object.hasOwnProperty.call(searchs, i)) {
-        const e = searchs[i];
-        e[0].addEventListener('keyup', (r)  => {
-            let sortIngredient = []
-            let sortAppliance = []
-            let sortUtensils = []
-            
-            const food = data.filter((food) => { 
-                const { ingredients, appliance, ustensils } = food
-                
-                if (r.path[0].id == 'blue') {
-
-                    let x = [...new Set(sortIngredient.sort())]
-                    ingredients.forEach(e => {
-                        if (!x.includes(e.ingredient.toLowerCase())) {
-                            sortIngredient.push(e.ingredient.toLowerCase())
-                        }
-                    });
-                    console.log(x);
-                    
-                } if (r.path[0].id == 'green') {
-
-                    let x = [...new Set(sortAppliance.sort())]
-                    if (!x.includes(appliance.toLowerCase())) {
-                        sortAppliance.push(appliance.toLowerCase())
-                    }                  
-                    console.log(x);
-
-                } else if (r.path[0].id == 'red') {
-
-                    let x = [...new Set(sortUtensils.sort())]
-                    for (let i = 0; i < ustensils.length; i++) {
-                        const el = ustensils[i];
-                        if (!x.includes(el.toLowerCase())) {
-                            sortUtensils.push(el.toLowerCase())
-                        }
-                    }
-                    console.log(x);
-                }  
-            })
-        })
-    }
-}
-
 function addTag(search, list, colore) {
+    
     for (const key in searchs) {
         if (Object.hasOwnProperty.call(searchs, key)) {
             const e = searchs[key];
@@ -186,7 +143,7 @@ function addTag(search, list, colore) {
     function model (text, color) {
         return (
         `
-            <div class="tag ${color}">
+            <div class="tag ${color}" title="${color}" id="${text}" >
                 <p>${text}</p>
                 <svg class="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/></svg>    
             </div>
@@ -196,11 +153,20 @@ function addTag(search, list, colore) {
     search.addEventListener('keypress', function (e) {
         if (e.key === 'Enter' && !multicolor.innerText.includes(list.innerText)) {
             multicolor.insertAdjacentHTML("beforeend", model(list.innerText, colore))
-            
+            search.value = ''
+            specificSort()
         }
     });
 }
 
+
+function specificSort(params) {
+    let asd = document.querySelector('.tag')
+    console.log(asd.title);
+    console.log(asd.id);
+    
+
+}
 const loadfoods = async () => {
     try {
         const res = await fetch('data.json');
