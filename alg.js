@@ -131,7 +131,6 @@ let searchs = {
 }
 
 function addTag(search, list, colore) {
-    
     for (const key in searchs) {
         if (Object.hasOwnProperty.call(searchs, key)) {
             const e = searchs[key];
@@ -159,14 +158,37 @@ function addTag(search, list, colore) {
     });
 }
 
-
+// Take the list of specific item and sort the recepies whit that items 
 function specificSort(params) {
-    let asd = document.querySelector('.tag')
-    console.log(asd.title);
-    console.log(asd.id);
-    
+    let asd = document.getElementsByClassName('tag')
+    for (let i = 0; i < asd.length; i++) {
+        const el = asd[i];
+        const item = el.id
+        const type = el.title
 
+        const food = data.filter((food) => {
+            const {ingredients, appliance, ustensils} = food
+            
+            if (type == 'blue') {
+                ingredients.forEach(e => {
+                    if (e.ingredient.includes(item)) {
+                        console.log(food);
+                    }
+                });
+            }
+
+            if (type == 'green' && appliance.toLowerCase().includes(item)) {
+                console.log(food);                
+            }
+
+            if (type == 'red' && ustensils.includes(item)) {
+                    console.log(food);                  
+            }
+        });
+        console.log(food);
+    }
 }
+
 const loadfoods = async () => {
     try {
         const res = await fetch('data.json');
