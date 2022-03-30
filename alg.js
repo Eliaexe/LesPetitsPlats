@@ -14,6 +14,7 @@ const redList = document.getElementById('redRow');
 let multicolor = document.getElementById('colorSort');
 // All data fetched
 let data = [];
+let newData = []
 
 searchBar.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
@@ -161,33 +162,39 @@ function addTag(search, list, colore) {
 // Take the list of specific item and sort the recepies whit that items 
 function specificSort(params) {
     let asd = document.getElementsByClassName('tag')
+    let x = data
+    
+    if (newData.length != 0) {
+        x = newData
+    }
+
     for (let i = 0; i < asd.length; i++) {
         const el = asd[i];
         const item = el.id
         const type = el.title
-
-        const food = data.filter((food) => {
+        console.log(x);
+        const food = x.filter((food) => {
             const {ingredients, appliance, ustensils} = food
-            
             if (type == 'blue') {
                 ingredients.forEach(e => {
-                    if (e.ingredient.includes(item)) {
-                        console.log(food);
+                    if (e.ingredient.includes(item)) {                  
+                        newData.push(food)
                     }
                 });
             }
-
             if (type == 'green' && appliance.toLowerCase().includes(item)) {
-                console.log(food);                
+                newData.push(food)                
             }
-
             if (type == 'red' && ustensils.includes(item)) {
-                    console.log(food);                  
+                newData.push(food)                  
             }
         });
-        console.log(food);
+        //console.log(newData);
+        displayfoods(newData)
     }
 }
+
+// se il risultato equivale a zero chiama a senno chiama b
 
 const loadfoods = async () => {
     try {
