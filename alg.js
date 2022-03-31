@@ -46,7 +46,7 @@ searchBlue.addEventListener('keyup', (e) => {
                         addTag(searchBlue, blueList, 'blue')
                         blueList.innerHTML += 
                             `
-                                <p>${x[i].ingredient}</p>                    
+                                <button class="singleSort blue">${x[i].ingredient}</button>                    
                             `        
                     }
                 }
@@ -132,6 +132,8 @@ let searchs = {
 }
 
 function addTag(search, list, colore) {
+    //Single sort oo child resoult
+    const searchFound = document.querySelectorAll('.singleSort');
     for (const key in searchs) {
         if (Object.hasOwnProperty.call(searchs, key)) {
             const e = searchs[key];
@@ -157,24 +159,38 @@ function addTag(search, list, colore) {
             specificSort()
         }
     });
+    /*if(searchFound !== null){
+        let foundArr = []
+        for (let i = 0; i < searchFound.length; i++) {
+            const e = searchFound[i];
+            console.log(e);
+            if (!foundArr.includes(e.outerText)) {
+                
+                foundArr.push(e.outerText);
+            }
+            //console.log(foundArr);
+        }
+        
+    }*/
 }
 
 // Take the list of specific item and sort the recepies whit that items 
-function specificSort(params) {
+function specificSort(y) {
     let asd = document.getElementsByClassName('tag')
     let x = data
-    
+
     if (newData.length != 0) {
         x = newData
     }
-
+console.log(x.id);
     for (let i = 0; i < asd.length; i++) {
         const el = asd[i];
         const item = el.id
         const type = el.title
-        console.log(x);
+
+        //console.log(x);
         const food = x.filter((food) => {
-            const {ingredients, appliance, ustensils} = food
+            const {id ,ingredients, appliance, ustensils} = food
             if (type == 'blue') {
                 ingredients.forEach(e => {
                     if (e.ingredient.includes(item)) {                  
@@ -189,7 +205,7 @@ function specificSort(params) {
                 newData.push(food)                  
             }
         });
-        //console.log(newData);
+        console.log(newData);
         displayfoods(newData)
     }
 }
