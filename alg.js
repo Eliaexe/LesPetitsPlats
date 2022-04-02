@@ -16,6 +16,7 @@ let multicolor = document.getElementById('colorSort');
 let data = [];
 let newData = []
 
+
 searchBar.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
     const food = data.filter((food) => {
@@ -153,10 +154,12 @@ function addTag(search, list, colore) {
         )
     }
     search.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter' && !multicolor.innerText.includes(list.innerText)) {
-            multicolor.insertAdjacentHTML("beforeend", model(list.innerText, colore))
+        let listItem = list.innerText
+        if (e.key === 'Enter' && !multicolor.innerText.includes(listItem)) {
+            
+            multicolor.insertAdjacentHTML("beforeend", model(listItem, colore))
             search.value = ''
-            specificSort()
+            specificSort(listItem)
         }
     });
     /*if(searchFound !== null){
@@ -175,28 +178,31 @@ function addTag(search, list, colore) {
 }
 
 // Take the list of specific item and sort the recepies whit that items 
-function specificSort(y) {
+function specificSort(sorted) {
     let asd = document.getElementsByClassName('tag')
     let x = data
-
-    if (newData.length != 0) {
+    if (newData != '') {
         x = newData
     }
-console.log(x.id);
+    Array.from(asd).forEach(function(e) {
+        console.log(e.id)
+    });
+//console.log(x.id);
     for (let i = 0; i < asd.length; i++) {
         const el = asd[i];
-        const item = el.id
+        const item = sorted
         const type = el.title
 
-        //console.log(x);
+        
         const food = x.filter((food) => {
             const {id ,ingredients, appliance, ustensils} = food
             if (type == 'blue') {
                 ingredients.forEach(e => {
-                    if (e.ingredient.includes(item)) {                  
+                    if (e.ingredient.includes(item) && !newData.includes(food)) {
                         newData.push(food)
                     }
                 });
+
             }
             if (type == 'green' && appliance.toLowerCase().includes(item)) {
                 newData.push(food)                
