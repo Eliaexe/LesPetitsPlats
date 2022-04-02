@@ -14,7 +14,8 @@ const redList = document.getElementById('redRow');
 let multicolor = document.getElementById('colorSort');
 // All data fetched
 let data = [];
-let newData = []
+let newData = [];
+let newFilter = []
 
 
 searchBar.addEventListener('keyup', (e) => {
@@ -180,12 +181,16 @@ function addTag(search, list, colore) {
 // Take the list of specific item and sort the recepies whit that items 
 function specificSort(sorted) {
     let asd = document.getElementsByClassName('tag')
+    let lastFilter = newFilter[newFilter.length ]
     let x = data
     if (newData != '') {
         x = newData
     }
     Array.from(asd).forEach(function(e) {
-        console.log(e.id)
+        if (!newFilter.includes(e.id)) {
+            //newFilter = []
+            newFilter.push(e.id)
+        }
     });
 //console.log(x.id);
     for (let i = 0; i < asd.length; i++) {
@@ -199,6 +204,7 @@ function specificSort(sorted) {
             if (type == 'blue') {
                 ingredients.forEach(e => {
                     if (e.ingredient.includes(item) && !newData.includes(food)) {
+                        
                         newData.push(food)
                     }
                 });
@@ -211,9 +217,13 @@ function specificSort(sorted) {
                 newData.push(food)                  
             }
         });
-        console.log(newData);
         displayfoods(newData)
     }
+
+    console.log(newFilter);
+    //  console.log(newData);
+    console.log(newFilter[newFilter.length - 1]);
+
 }
 
 // se il risultato equivale a zero chiama a senno chiama b
