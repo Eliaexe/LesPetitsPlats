@@ -15,7 +15,7 @@ let multicolor = document.getElementById('colorSort');
 // All data fetched
 let data = [];
 let newData = [];
-let newFilter = []
+
 
 
 searchBar.addEventListener('keyup', (e) => {
@@ -181,18 +181,43 @@ function addTag(search, list, colore) {
 // Take the list of specific item and sort the recepies whit that items 
 function specificSort(sorted) {
     let asd = document.getElementsByClassName('tag')
-    let lastFilter = newFilter[newFilter.length ]
+    //let lastFilter = newFilter[newFilter.length ]
     let x = data
+    console.clear()
+    let sortedData = [...new Set(newData)]
+    
     if (newData != '') {
         x = newData
     }
     Array.from(asd).forEach(function(e) {
-        if (!newFilter.includes(e.id)) {
-            //newFilter = []
-            newFilter.push(e.id)
-        }
+        let lastInput = asd[asd.length - 1]
+        const item = sorted
+        const type = lastInput.title
+        const food = data.filter(( (food)=> {
+            const {id ,ingredients, appliance, ustensils} = food
+            if (type == 'blue') {
+                ingredients.forEach(e => {
+                    if (e.ingredient.includes(item)) {
+                        console.log(food);
+                        newData.push(food)
+                    }
+
+                })
+/*
+                let uniqueArr = []
+                let uniqueObj = {}
+                for (const i of newData) {
+                    console.log(newData, [i], [id]); 
+                }
+*/
+                           
+            }
+        }))
     });
+
+    //console.log(newData);
 //console.log(x.id);
+/*
     for (let i = 0; i < asd.length; i++) {
         const el = asd[i];
         const item = sorted
@@ -204,11 +229,10 @@ function specificSort(sorted) {
             if (type == 'blue') {
                 ingredients.forEach(e => {
                     if (e.ingredient.includes(item) && !newData.includes(food)) {
-                        
                         newData.push(food)
                     }
                 });
-
+                
             }
             if (type == 'green' && appliance.toLowerCase().includes(item)) {
                 newData.push(food)                
@@ -217,15 +241,15 @@ function specificSort(sorted) {
                 newData.push(food)                  
             }
         });
+        console.log(x);
         displayfoods(newData)
     }
 
-    console.log(newFilter);
+    //console.log(newFilter);
     //  console.log(newData);
-    console.log(newFilter[newFilter.length - 1]);
-
+    //console.log(newFilter[newFilter.length - 1]);
+*/
 }
-
 // se il risultato equivale a zero chiama a senno chiama b
 
 const loadfoods = async () => {
