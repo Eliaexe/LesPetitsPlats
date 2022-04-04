@@ -15,6 +15,7 @@ let multicolor = document.getElementById('colorSort');
 // All data fetched
 let data = [];
 let newData = [];
+let uniqueArr = []      
 
 
 
@@ -183,33 +184,38 @@ function specificSort(sorted) {
     let asd = document.getElementsByClassName('tag')
     //let lastFilter = newFilter[newFilter.length ]
     let x = data
-    console.clear()
+    let y =
+
+    console.log('-----');
     let sortedData = [...new Set(newData)]
     
     if (newData != '') {
         x = newData
     }
+    console.log(x);
     Array.from(asd).forEach(function(e) {
         let lastInput = asd[asd.length - 1]
+                                                                                            /* need to fix ricorsion, eliminate the duplicates*/
         const item = sorted
         const type = lastInput.title
-        const food = data.filter(( (food)=> {
+        const food = x.filter(( (food)=> {
             const {id ,ingredients, appliance, ustensils} = food
             if (type == 'blue') {
                 ingredients.forEach(e => {
                     if (e.ingredient.includes(item)) {
-                        console.log(food);
+
+                        //console.log(food);
+
                         newData.push(food)
+                    } 
+                    if(newData.includes(food[id])){
+                        console.log(food);
                     }
 
                 })
-/*
-                let uniqueArr = []
-                let uniqueObj = {}
-                for (const i of newData) {
-                    console.log(newData, [i], [id]); 
-                }
-*/
+
+
+
                            
             }
         }))
