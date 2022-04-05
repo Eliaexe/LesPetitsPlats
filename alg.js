@@ -179,6 +179,24 @@ function addTag(search, list, colore) {
     }*/
 }
 
+
+
+function removeDuplicateObjectFromArray(array, key) {
+    var check = {};
+    var res = [];
+    array.forEach(element => {
+        if(!check[element[key]]) {
+            check[element[key]] = true;
+            res.push(element);
+        }
+    });
+    return res;
+}
+ 
+
+
+   
+
 // Take the list of specific item and sort the recepies whit that items 
 function specificSort(sorted) {
     let asd = document.getElementsByClassName('tag')
@@ -189,33 +207,39 @@ function specificSort(sorted) {
     console.log('-----');
     let sortedData = [...new Set(newData)]
     
+console.log()
     if (newData != '') {
-        x = newData
+        x = removeDuplicateObjectFromArray(newData, 'id')
     }
+   
+
     console.log(x);
     Array.from(asd).forEach(function(e) {
         let lastInput = asd[asd.length - 1]
-                                                                                            /* need to fix ricorsion, eliminate the duplicates*/
+                                                                                            /* need to fix ricorsion, eliminate the duplicates 
+                                                                                            
+                                                                                            https://www.w3schools.com/js/js_array_iteration.asp*/
         const item = sorted
         const type = lastInput.title
         const food = x.filter(( (food)=> {
             const {id ,ingredients, appliance, ustensils} = food
             if (type == 'blue') {
+               
                 ingredients.forEach(e => {
+                    console.log(item, e.ingredient); 
                     if (e.ingredient.includes(item)) {
-
+                        
                         //console.log(food);
-
+                        
                         newData.push(food)
-                    } 
+                    } else if (!e.ingredient.includes(item)) {
+                        
+                    }
                     if(newData.includes(food[id])){
-                        console.log(food);
+                        //console.log(food);
                     }
 
                 })
-
-
-
                            
             }
         }))
