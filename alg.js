@@ -214,38 +214,23 @@ console.log()
    
 
     console.log(x);
-    Array.from(asd).forEach(function(e) {
+    Array.from(asd, function() {
         let lastInput = asd[asd.length - 1]
-                                                                                            /* need to fix ricorsion, eliminate the duplicates 
-                                                                                            
-                                                                                            https://www.w3schools.com/js/js_array_iteration.asp*/
         const item = sorted
         const type = lastInput.title
         const food = x.filter(( (food)=> {
             const {id ,ingredients, appliance, ustensils} = food
             if (type == 'blue') {
-               
                 ingredients.forEach(e => {
-                    console.log(item, e.ingredient); 
-                    if (e.ingredient.includes(item)) {
-                        
-                        //console.log(food);
-                        
+                    if (e.ingredient.includes(item) && !newData.includes(food)) {
                         newData.push(food)
-                    } else if (!e.ingredient.includes(item)) {
-                        
-                    }
-                    if(newData.includes(food[id])){
-                        //console.log(food);
-                    }
-
-                })
-                           
+                    } 
+                }) 
             }
         }))
     });
 
-    //console.log(newData);
+    console.log(newData);
 //console.log(x.id);
 /*
     for (let i = 0; i < asd.length; i++) {
