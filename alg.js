@@ -31,102 +31,24 @@ searchBar.addEventListener('keyup', (e) => {
 
 searchBlue.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
-    if (searchString.length >= 3) {
-        let z = []
+    const food = data.filter((food) => {
+    const {id, name, time, description, ingredients, appliance, ustensils} = food
+    let fff = ingredients.map(function (ingredient) {
+        return ingredient.ingredient
+    })
 
-        const food = data.filter((food) => {
-            let x = food.ingredients
-            let y = []
-
-            x.forEach(e => {
-                y.push(e.ingredient.toLowerCase())
-            });
-    
-            for (let i in y) {
-                if (!blueList.innerText.toLocaleLowerCase().includes(x[i].ingredient.toLocaleLowerCase())) {
-                    if (x[i].ingredient.toLowerCase().includes(searchString)){
-                        z.push(x[i].ingredient)
-                        addTag(searchBlue, blueList, 'blue')
-                        blueList.innerHTML += 
-                            `
-                                <button class="singleSort blue">${x[i].ingredient}</button>                    
-                            `        
-                    }
-                }
-            };
-        });
-    } else if (searchString < 3){
-        blueList.innerHTML = ''
+    let ggg = fff.join(',')
+    for (let i = 0; i < food.length; i++) {
+        const e = food[i];
     }
-
+        return (
+            ggg.toLowerCase().includes(searchString)
+        );
+    });
+    displayfoods(food);
+    console.table(food);
 });
 
-searchGreen.addEventListener('keyup', (e) => {
-    const searchString = e.target.value.toLowerCase();
-    let y = []    
-    
-    const food = data.filter((food) => {
-        let x = food.appliance
-        let z = [...new Set(y)]
-
-        if (!z.includes(x.toLowerCase())) {
-            y.push(x.toLowerCase())
-        }
-
-        if (searchString.length >= 3) {
-            for (let i = 0; i < z.length; i++) {
-                const el = z[i];
-                if (el.includes(searchString)) {
-                    if (!greenList.innerText.includes(el)) {
-                        addTag(searchGreen, greenList, 'green')
-                        greenList.innerHTML += 
-                        `
-                            <p>${el}</p>                    
-                        `
-                    }
-                }
-            }
-        }  else if (searchString < 3){
-            greenList.innerHTML = ''
-        }
-        return (
-            food.appliance.toLowerCase().includes(searchString)
-        )
-    })
-})
-
-searchRed.addEventListener('keyup', (e) => {
-    const searchString = e.target.value.toLowerCase();
-    let y = [] 
-
-    const food = data.filter((food) => {
-        let x = food.ustensils
-        let z = [...new Set(y.sort())]
-
-        for (let i = 0; i < x.length; i++) {
-            const el = x[i];
-            y.push(el.toLowerCase())
-        }
-        if (searchString.length >= 3) {
-            for (let i = 0; i < z.length; i++) {
-                const el = z[i];
-                if (el.includes(searchString)) {
-                    console.log(el.includes(searchString)   );
-                    if (!redList.innerText.includes(el)) {
-                        addTag(searchRed, redList, 'red')
-                        redList.innerHTML += 
-                        `
-                            <p>${el}</p>                    
-                        `
-                    }
-                }
-            }
-        }  else if (searchString < 3){
-            redList.innerHTML = ''
-        }
-        //console.log(z.includes(searchString))        
-    })
-})
 
 let searchs = {
     blue: [searchBlue, blueList],
@@ -164,19 +86,6 @@ function addTag(search, list, colore) {
             specificSort(listItem)
         }
     });
-    /*if(searchFound !== null){
-        let foundArr = []
-        for (let i = 0; i < searchFound.length; i++) {
-            const e = searchFound[i];
-            console.log(e);
-            if (!foundArr.includes(e.outerText)) {
-                
-                foundArr.push(e.outerText);
-            }
-            //console.log(foundArr);
-        }
-        
-    }*/
 }
 
 
@@ -207,13 +116,16 @@ function specificSort(sorted) {
     console.log('-----');
     let sortedData = [...new Set(newData)]
     
-console.log()
     if (newData != '') {
         x = removeDuplicateObjectFromArray(newData, 'id')
     }
    
 
     console.log(x);
+    let risultato = x.reduce( (acc, obj) => {
+        return acc
+    } )
+    console.log(risultato.id);
     Array.from(asd, function() {
         let lastInput = asd[asd.length - 1]
         const item = sorted
@@ -229,41 +141,6 @@ console.log()
             }
         }))
     });
-
-    console.log(newData);
-//console.log(x.id);
-/*
-    for (let i = 0; i < asd.length; i++) {
-        const el = asd[i];
-        const item = sorted
-        const type = el.title
-
-        
-        const food = x.filter((food) => {
-            const {id ,ingredients, appliance, ustensils} = food
-            if (type == 'blue') {
-                ingredients.forEach(e => {
-                    if (e.ingredient.includes(item) && !newData.includes(food)) {
-                        newData.push(food)
-                    }
-                });
-                
-            }
-            if (type == 'green' && appliance.toLowerCase().includes(item)) {
-                newData.push(food)                
-            }
-            if (type == 'red' && ustensils.includes(item)) {
-                newData.push(food)                  
-            }
-        });
-        console.log(x);
-        displayfoods(newData)
-    }
-
-    //console.log(newFilter);
-    //  console.log(newData);
-    //console.log(newFilter[newFilter.length - 1]);
-*/
 }
 // se il risultato equivale a zero chiama a senno chiama b
 
