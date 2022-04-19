@@ -17,7 +17,17 @@ let data = [];
 let newData = [];
 let uniqueArr = []      
 
-
+function findIngredient(food) {
+    const {id, name, time, description, ingredients, appliance, ustensils} = food
+    let fff = ingredients.map(function (ingredient) {
+        return ingredient.ingredient
+    })
+    let ggg = fff.join(',')
+    for (let i = 0; i < food.length; i++) {
+        const e = food[i];
+    }
+    return ggg
+}
 
 searchBar.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
@@ -32,21 +42,12 @@ searchBar.addEventListener('keyup', (e) => {
 searchBlue.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
     const food = data.filter((food) => {
-    const {id, name, time, description, ingredients, appliance, ustensils} = food
-    let fff = ingredients.map(function (ingredient) {
-        return ingredient.ingredient
-    })
-
-    let ggg = fff.join(',')
-    for (let i = 0; i < food.length; i++) {
-        const e = food[i];
-    }
+    
         return (
-            ggg.toLowerCase().includes(searchString)
+            findIngredient(food).toLowerCase().includes(searchString)
         );
     });
     displayfoods(food);
-    console.table(food);
 });
 
 
@@ -88,62 +89,7 @@ function addTag(search, list, colore) {
     });
 }
 
-
-
-function removeDuplicateObjectFromArray(array, key) {
-    var check = {};
-    var res = [];
-    array.forEach(element => {
-        if(!check[element[key]]) {
-            check[element[key]] = true;
-            res.push(element);
-        }
-    });
-    return res;
-}
- 
-
-
-   
-
-// Take the list of specific item and sort the recepies whit that items 
-function specificSort(sorted) {
-    let asd = document.getElementsByClassName('tag')
-    //let lastFilter = newFilter[newFilter.length ]
-    let x = data
-    let y =
-
-    console.log('-----');
-    let sortedData = [...new Set(newData)]
-    
-    if (newData != '') {
-        x = removeDuplicateObjectFromArray(newData, 'id')
-    }
-   
-
-    console.log(x);
-    let risultato = x.reduce( (acc, obj) => {
-        return acc
-    } )
-    console.log(risultato.id);
-    Array.from(asd, function() {
-        let lastInput = asd[asd.length - 1]
-        const item = sorted
-        const type = lastInput.title
-        const food = x.filter(( (food)=> {
-            const {id ,ingredients, appliance, ustensils} = food
-            if (type == 'blue') {
-                ingredients.forEach(e => {
-                    if (e.ingredient.includes(item) && !newData.includes(food)) {
-                        newData.push(food)
-                    } 
-                }) 
-            }
-        }))
-    });
-}
 // se il risultato equivale a zero chiama a senno chiama b
-
 const loadfoods = async () => {
     try {
         const res = await fetch('data.json');
@@ -157,15 +103,11 @@ const loadfoods = async () => {
 const displayfoods = (foods) => {
     const htmlString = foods
         .map((food) => {
-        const {id, name, time, description, ingredients, appliance, ustensils} = food
-        //console.log(ingredients);
-        function putIngredient() {
-            for (let i = 0; i < ingredients.length; i++) {
-                const e = ingredients[i];
-                var {ingredient, quantity, unit } = e
-            }
-        }
-        
+            const {id, name, time, description, ingredients, appliance, ustensils} = food
+            let qqq = ingredients.map(function (ingredient) {
+                return ingredient.ingredient
+            })
+
             return`
             <div class="post">
                 <div class="top_post"></div>
@@ -187,6 +129,28 @@ const displayfoods = (foods) => {
             </div>`;
         }).join('');
     foodsList.innerHTML = htmlString;
+
+    foods.forEach(e => {
+        let x = document.getElementById(e.id)
+        const {id, name, time, description, ingredients, appliance, ustensils} = e
+        let qqq = ingredients.map(function (ingredient) {
+            return ingredient.ingredient
+        })
+        for (let i = 0; i < qqq.length; i++) {
+            const el = qqq[i];
+            x.innerHTML += `<li>${el}</li>`
+        }
+    });
 };
+
+function putIngredient(eccolo) {
+    let sector = document.getElementsByClassName('ul_post');
+    for (let i = 0; i < sector.length; i++) {
+        const e = sector[i];
+        console.log(eccolo);
+    }
+}
+
+
 
 loadfoods();
