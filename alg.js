@@ -17,18 +17,6 @@ let data = [];
 let newData = [];
 let uniqueArr = []      
 
-function findIngredient(food) {
-    const {id, name, time, description, ingredients, appliance, ustensils} = food
-    let fff = ingredients.map(function (ingredient) {
-        return ingredient.ingredient
-    })
-    let ggg = fff.join(',')
-    for (let i = 0; i < food.length; i++) {
-        const e = food[i];
-    }
-    return ggg
-}
-
 searchBar.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
     const food = data.filter((food) => {
@@ -39,22 +27,43 @@ searchBar.addEventListener('keyup', (e) => {
     displayfoods(food);
 });
 
-searchBlue.addEventListener('keyup', (e) => {
-    const searchString = e.target.value.toLowerCase();
-    const food = data.filter((food) => {
-    
-        return (
-            findIngredient(food).toLowerCase().includes(searchString)
-        );
-    });
-    displayfoods(food);
-});
-
-
 let searchs = {
     blue: [searchBlue, blueList],
     green: [searchGreen, greenList],
     red: [searchRed, redList]
+}
+
+for (const key in searchs) {
+    if (Object.hasOwnProperty.call(searchs, key)) {
+        const el = searchs[key];
+        el[0].addEventListener('keyup', (e) => {
+            const searchString = e.target.value.toLowerCase();
+            if (el[0].value.length >= '3') {
+                const food = data.filter((food) => {
+                    const {id, name, time, description, ingredients, appliance, ustensils} = food
+                    if (el[0] == searchBlue) {
+                        let fff = ingredients.map(function (ingredient) {
+                            return ingredient.ingredient
+                        })
+                        let ggg = fff.join(',')
+                        return (
+                            ggg.toLowerCase().includes(searchString)
+                        );
+                    } else if (el[0] == searchGreen) {
+                        return (
+                            appliance.toLowerCase().includes(searchString)
+                        );
+                    } else if (el[0] == searchRed) {
+                        let hhh = ustensils.join(',')
+                        return (
+                            hhh.toLowerCase().includes(searchString)
+                        );
+                    }
+                });
+                displayfoods(food);
+            }
+        });
+    }
 }
 
 function addTag(search, list, colore) {
@@ -136,21 +145,19 @@ const displayfoods = (foods) => {
         let qqq = ingredients.map(function (ingredient) {
             return ingredient.ingredient
         })
+        let www = ingredients.map(function (ingredient) {
+            return ingredient.quantity || ingredient.quantite
+        })
+        let eee = ingredients.map(function (ingredient) {
+            return ingredient.unit 
+        })      
         for (let i = 0; i < qqq.length; i++) {
             const el = qqq[i];
-            x.innerHTML += `<li>${el}</li>`
+            const el1 = www[i]
+            const el2 = eee[i]
+            x.innerHTML += `<li>${el}: ${el1} ${el2}</li>`
         }
     });
 };
-
-function putIngredient(eccolo) {
-    let sector = document.getElementsByClassName('ul_post');
-    for (let i = 0; i < sector.length; i++) {
-        const e = sector[i];
-        console.log(eccolo);
-    }
-}
-
-
 
 loadfoods();

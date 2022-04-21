@@ -136,6 +136,22 @@ form input{
     flex-direction: row;
 }
 
+.blueRow{
+    display: flex;
+    flex-direction: column;
+}
+
+.singleSort{
+    display: block;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    border: solid 1px #3282F7;
+    color: #f1f1f1;
+}
+
 .container-button .result{
     text-align: left;
     display: none;
@@ -214,7 +230,7 @@ main{
 
 .pad{
     padding: 20px;
-
+    overflow-y: hidden;
 }
 
 .midlle_post{
@@ -258,6 +274,7 @@ main{
     display: flex;
     align-items: flex-start;
     width: 100%;
+    height: fit-content;
 }
 
 .bottom_post ul{
@@ -282,23 +299,21 @@ main{
     margin: 2px;
 }
 
-.bottom_post li p{
-    max-width: 45%;
+.bottom_post li{
+    max-width: 98%;
     font-family: Roboto;
     font-size: 12px;
     font-weight: 400;
-    margin: .5px;
-
 }
 
 .description{
-    max-width: 47%;
+    width: 80%;
+    height: 120px;
     float: right;
     font-family: Roboto;
     font-size: 12px;
     font-weight: 400;
     text-align: left;
     padding-right: 5px;
-
-    overflow: hidden;
+    overflow-y: scroll;
 }
