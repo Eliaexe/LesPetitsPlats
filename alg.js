@@ -12,22 +12,9 @@ const greenList = document.getElementById('greenRow');
 const redList = document.getElementById('redRow');
 // Where to display result for single search
 let multicolor = document.getElementById('colorSort');
-// All data fetched
-let data = [];
-let newData = [];
-let uniqueArr = []      
-
-searchBar.addEventListener('keyup', (e) => {
-    const searchString = e.target.value.toLowerCase();
-    const food = data.filter((food) => {
-        return (
-            food.name.toLowerCase().includes(searchString)
-        );
-    });
-    displayfoods(food);
-});
 
 let searchs = {
+    main: [searchBar],
     blue: [searchBlue, blueList],
     green: [searchGreen, greenList],
     red: [searchRed, redList]
@@ -41,13 +28,13 @@ for (const key in searchs) {
             if (el[0].value.length >= '3') {
                 const food = data.filter((food) => {
                     const {id, name, time, description, ingredients, appliance, ustensils} = food
+                    let fff = ingredients.map(function (ingredient) {
+                        return ingredient.ingredient
+                    })
+                    let ing = fff.join(',')
                     if (el[0] == searchBlue) {
-                        let fff = ingredients.map(function (ingredient) {
-                            return ingredient.ingredient
-                        })
-                        let ggg = fff.join(',')
                         return (
-                            ggg.toLowerCase().includes(searchString)
+                            ing.toLowerCase().includes(searchString)
                         );
                     } else if (el[0] == searchGreen) {
                         return (
@@ -58,11 +45,43 @@ for (const key in searchs) {
                         return (
                             hhh.toLowerCase().includes(searchString)
                         );
+                    } else if (el[0] == searchBar){
+                        return (
+                            food.name.toLowerCase().includes(searchString) || 
+                            food.description.toLowerCase().includes(searchString) || 
+                            ing.toLowerCase().includes(searchString)
+                        );
                     }
                 });
                 displayfoods(food);
             }
         });
+
+        el[0].addEventListener('click', (e) => {
+            className = foodsList.getElementsByClassName('post')
+            let allIng = []
+            for (let i = 0; i < className.length; i++) {
+                const elem = className[i];
+                let itemId = elem.classList[1];
+                
+                const {id, name, time, description, ingredients, appliance, ustensils} = data[itemId - 1]
+                let fff = ingredients.map(function (ingredient) {
+                    return ingredient.ingredient
+                })
+                
+                for (let i = 0; i < fff.length; i++) {
+                    const ele = fff[i];
+                    if (!allIng.includes(ele)) {
+                        allIng.push(ele)
+                    }
+                }
+            }
+            console.log('___________');
+            new Set(allIng).forEach(element => {
+                console.log(element);
+            });
+            
+        })
     }
 }
 
@@ -72,9 +91,9 @@ function addTag(search, list, colore) {
     for (const key in searchs) {
         if (Object.hasOwnProperty.call(searchs, key)) {
             const e = searchs[key];
-            e[0].addEventListener('keydown', () =>{
+            e[0].addEventListener('keydown', () => {
                 //console.log(e[1]);
-            } )
+            })
         }
     }
     function model (text, color) {
@@ -113,12 +132,8 @@ const displayfoods = (foods) => {
     const htmlString = foods
         .map((food) => {
             const {id, name, time, description, ingredients, appliance, ustensils} = food
-            let qqq = ingredients.map(function (ingredient) {
-                return ingredient.ingredient
-            })
-
             return`
-            <div class="post">
+            <div class="post ${id}">
                 <div class="top_post"></div>
                 <div class="pad">
                     <div class="middle_post">
