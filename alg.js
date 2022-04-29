@@ -6,6 +6,8 @@ const searchBar = document.getElementById('search');
 const searchBlue = document.getElementById('blue');
 const searchGreen = document.getElementById('green');
 const searchRed = document.getElementById('red');
+
+const searchInput = document.getElementsByClassName('searchInput')
 // Where to display child resoult
 const blueList = document.getElementById('blueRow');
 const greenList = document.getElementById('greenRow');
@@ -13,76 +15,49 @@ const redList = document.getElementById('redRow');
 // Where to display result for single search
 let multicolor = document.getElementById('colorSort');
 
-let searchs = {
-    main: [searchBar],
-    blue: [searchBlue, blueList],
-    green: [searchGreen, greenList],
-    red: [searchRed, redList]
-}
 
-for (const key in searchs) {
-    if (Object.hasOwnProperty.call(searchs, key)) {
-        const el = searchs[key];
-        el[0].addEventListener('keyup', (e) => {
-            const searchString = e.target.value.toLowerCase();
-            if (el[0].value.length >= '3') {
-                const food = data.filter((food) => {
-                    const {id, name, time, description, ingredients, appliance, ustensils} = food
-                    let fff = ingredients.map(function (ingredient) {
-                        return ingredient.ingredient
-                    })
-                    let ing = fff.join(',')
-                    if (el[0] == searchBlue) {
+
+for (let i = 0; i < searchInput.length; i++) {
+    const input = searchInput[i];
+
+    input.addEventListener('keyup', () => {
+        let searchString = input.value.toLowerCase()
+        if (searchString.length < 3) {
+            return false
+        }
+        const foods = data.filter((food) => {
+            const {id, name, time, description, ingredients, appliance, ustensils} = food
+            for (let i = 0; i < foodsList.children.length; i++) {
+                const cardIndex = foodsList.children[i].classList[1];
+                if (id == cardIndex) {
+                    let ingredient = ingredients.map((x) => {
+                       return x.ingredient
+                    }).join(',')
+                    if (input.name == 'ingredients') {
                         return (
-                            ing.toLowerCase().includes(searchString)
+                            ingredient.toLowerCase().includes(searchString)
                         );
-                    } else if (el[0] == searchGreen) {
+                    } else if (input.name == 'appareils') {
                         return (
                             appliance.toLowerCase().includes(searchString)
                         );
-                    } else if (el[0] == searchRed) {
-                        let hhh = ustensils.join(',')
+                    } else if (input.name == 'utensiles') {
                         return (
-                            hhh.toLowerCase().includes(searchString)
+                            ustensils.join(',').toLowerCase().includes(searchString)
                         );
-                    } else if (el[0] == searchBar){
+                    } else if (input.name == 'mainSearch') {
                         return (
                             food.name.toLowerCase().includes(searchString) || 
                             food.description.toLowerCase().includes(searchString) || 
-                            ing.toLowerCase().includes(searchString)
+                            ingredient.toLowerCase().includes(searchString)
                         );
-                    }
-                });
-                displayfoods(food);
-            }
-        });
-
-        el[0].addEventListener('click', (e) => {
-            className = foodsList.getElementsByClassName('post')
-            let allIng = []
-            for (let i = 0; i < className.length; i++) {
-                const elem = className[i];
-                let itemId = elem.classList[1];
-                
-                const {id, name, time, description, ingredients, appliance, ustensils} = data[itemId - 1]
-                let fff = ingredients.map(function (ingredient) {
-                    return ingredient.ingredient
-                })
-                
-                for (let i = 0; i < fff.length; i++) {
-                    const ele = fff[i];
-                    if (!allIng.includes(ele)) {
-                        allIng.push(ele)
                     }
                 }
             }
-            console.log('___________');
-            new Set(allIng).forEach(element => {
-                console.log(element);
-            });
-            
         })
-    }
+
+        displayfoods(foods)
+    })
 }
 
 function addTag(search, list, colore) {
