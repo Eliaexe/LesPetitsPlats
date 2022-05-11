@@ -96,12 +96,15 @@ form input{
 
 .container_nav {
     display: inline-flex;
+    position: relative;
     background-size: 300% 100%;
     border-radius: 5px;
     color: #ffff;
     font-weight: bold;
     border: none;
     text-align: center;
+    max-width: 45vw;
+    max-height: auto;
 }
 
 .container_nav svg{
@@ -136,11 +139,6 @@ form input{
     flex-direction: row;
 }
 
-.blueRow{
-    display: flex;
-    flex-direction: column;
-}
-
 .singleSort{
     display: block;
     font-size: 18px;
@@ -155,6 +153,27 @@ form input{
 .container-button .result{
     text-align: left;
     display: none;
+}
+
+.d-none {
+    display: none;
+}
+
+.listed {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.listed button {
+    border: 0px solid white;
+    background: #3282F7;
+    padding: .5rem;
+}
+
+.listed button:hover{
+    border: solid 2px white;
+    border-radius: 5px;
 }
 
 .container-button .result p{

@@ -14,28 +14,28 @@ const greenList = document.getElementById('greenRow');
 const redList = document.getElementById('redRow');
 // Where to display result for single search
 let multicolor = document.getElementById('colorSort');
-
-
+let dropDown = document.getElementsByClassName('dropDown');
 
 for (let i = 0; i < searchInput.length; i++) {
     const input = searchInput[i];
-
+    
     input.addEventListener('keyup', () => {
         let searchString = input.value.toLowerCase()
         if (searchString.length < 3) {
             return false
         }
+        
         const foods = data.filter((food) => {
             const {id, name, time, description, ingredients, appliance, ustensils} = food
             for (let i = 0; i < foodsList.children.length; i++) {
                 const cardIndex = foodsList.children[i].classList[1];
                 if (id == cardIndex) {
                     let ingredient = ingredients.map((x) => {
-                       return x.ingredient
-                    }).join(',')
+                        return x.ingredient
+                    })
                     if (input.name == 'ingredients') {
                         return (
-                            ingredient.toLowerCase().includes(searchString)
+                            ingredient.join(',').toLowerCase().includes(searchString)
                         );
                     } else if (input.name == 'appareils') {
                         return (
@@ -55,7 +55,6 @@ for (let i = 0; i < searchInput.length; i++) {
                 }
             }
         })
-
         displayfoods(foods)
     })
 }
@@ -92,7 +91,7 @@ function addTag(search, list, colore) {
     });
 }
 
-// se il risultato equivale a zero chiama a senno chiama b
+// fetch
 const loadfoods = async () => {
     try {
         const res = await fetch('data.json');
@@ -128,13 +127,21 @@ const displayfoods = (foods) => {
             </div>`;
         }).join('');
     foodsList.innerHTML = htmlString;
-
+    let ingDisponible = []
+    let appDisponible = []
+    let uteDisponible = []
     foods.forEach(e => {
         let x = document.getElementById(e.id)
         const {id, name, time, description, ingredients, appliance, ustensils} = e
         let qqq = ingredients.map(function (ingredient) {
-            return ingredient.ingredient
+            ingDisponible.push(ingredient.ingredient)
+            return ingredient.ingredient.toLowerCase()
         })
+        appDisponible.push(appliance)
+        for (let i = 0; i < ustensils.length; i++) {
+            const element = ustensils[i];
+            uteDisponible.push(element)
+        }
         let www = ingredients.map(function (ingredient) {
             return ingredient.quantity || ingredient.quantite
         })
@@ -148,6 +155,41 @@ const displayfoods = (foods) => {
             x.innerHTML += `<li>${el}: ${el1} ${el2}</li>`
         }
     });
+    // display the element in the search bar 
+    let childList = document.getElementsByClassName('listed');
+    blueList.innerHTML = ``
+    greenList.innerHTML = ``
+    redList.innerHTML = ``
+    new Set(ingDisponible).forEach(element => {
+        blueList.innerHTML += `<button name='btn_select'>${element}</button>`
+    });
+    new Set(appDisponible).forEach(element => {
+        greenList.innerHTML += `<button name='btn_select'>${element}</button>`
+    });new Set(uteDisponible).forEach(element => {
+        redList.innerHTML += `<button name='btn_select'>${element}</button>`
+    });
+
+    for (let i = 0; i < dropDown.length; i++) {
+        const element = dropDown[i];
+        element.addEventListener('click', () =>{
+            let subElement = element.nextElementSibling;
+            subElement.classList.toggle("d-none");
+        })
+    }
+
+    for (let i = 0; i < document.querySelectorAll('[name=btn_select]').length; i++) {
+        const element = document.querySelectorAll('[name=btn_select]')[i];
+        element.addEventListener('click', () => {
+              
+            let xxx = element.parentElement
+            let place = xxx.attributes[0].value
+            document.getElementById(place).value = element.innerText  
+            // hai preso il nome del input richiesto
+            //console.log(xxx.querySelectorAll('[name=btn_select]'))
+
+        })
+    }
+    
 };
 
 loadfoods();
