@@ -6,7 +6,7 @@ const searchBar = document.getElementById('search');
 const searchBlue = document.getElementById('blue');
 const searchGreen = document.getElementById('green');
 const searchRed = document.getElementById('red');
-
+// All search bars
 const searchInput = document.getElementsByClassName('searchInput')
 // Where to display child resoult
 const blueList = document.getElementById('blueRow');
@@ -15,80 +15,51 @@ const redList = document.getElementById('redRow');
 // Where to display result for single search
 let multicolor = document.getElementById('colorSort');
 let dropDown = document.getElementsByClassName('dropDown');
+// Dropdown items
+const specificSearch = document.getElementsByClassName('placeholder');
+const specificItem = document.getElementsByClassName('specificItem');
+const specificPlace = document.getElementById('specificSelected');
 
+// user search in the data 
 for (let i = 0; i < searchInput.length; i++) {
     const input = searchInput[i];
-    
     input.addEventListener('keyup', () => {
         let searchString = input.value.toLowerCase()
-        if (searchString.length < 3) {
-            return false
-        }
-        
-        const foods = data.filter((food) => {
-            const {id, name, time, description, ingredients, appliance, ustensils} = food
-            for (let i = 0; i < foodsList.children.length; i++) {
-                const cardIndex = foodsList.children[i].classList[1];
-                if (id == cardIndex) {
-                    let ingredient = ingredients.map((x) => {
-                        return x.ingredient
-                    })
-                    if (input.name == 'ingredients') {
-                        return (
-                            ingredient.join(',').toLowerCase().includes(searchString)
-                        );
-                    } else if (input.name == 'appareils') {
-                        return (
-                            appliance.toLowerCase().includes(searchString)
-                        );
-                    } else if (input.name == 'utensiles') {
-                        return (
-                            ustensils.join(',').toLowerCase().includes(searchString)
-                        );
-                    } else if (input.name == 'mainSearch') {
-                        return (
-                            food.name.toLowerCase().includes(searchString) || 
-                            food.description.toLowerCase().includes(searchString) || 
-                            ingredient.toLowerCase().includes(searchString)
-                        );
+            const foods = data.filter((food) => {
+                const {id, name, time, description, ingredients, appliance, ustensils} = food
+                for (let i = 0; i < foodsList.children.length; i++) {
+                    const cardIndex = foodsList.children[i].classList[1];
+                    if (id == cardIndex) {
+                        let ingredient = ingredients.map((x) => {
+                            return x.ingredient
+                        })
+
+                        if (input.name == 'ingredients') {
+                            return (
+                                ingredient.join(',').toLowerCase().includes(searchString)
+                            );
+                        } else if (input.name == 'appareils') {
+                            return (
+                                appliance.toLowerCase().includes(searchString)
+                            );
+                        } else if (input.name == 'utensiles') {
+                            return (
+                                ustensils.join(',').toLowerCase().includes(searchString)
+                            );
+                        } else if (input.name == 'mainSearch') {
+                            return (
+                                food.name.toLowerCase().includes(searchString) ||
+                                food.description.toLowerCase().includes(searchString) ||
+                                ingredients.find(o => o.ingredient.toLowerCase().includes(searchString))
+                            );
+                        }
                     }
                 }
-            }
-        })
-        displayfoods(foods)
-    })
-}
-
-function addTag(search, list, colore) {
-    //Single sort oo child resoult
-    const searchFound = document.querySelectorAll('.singleSort');
-    for (const key in searchs) {
-        if (Object.hasOwnProperty.call(searchs, key)) {
-            const e = searchs[key];
-            e[0].addEventListener('keydown', () => {
-                //console.log(e[1]);
             })
+        if (searchString.length >= 3) {
+            displayfoods(foods)   
         }
-    }
-    function model (text, color) {
-        return (
-        `
-            <div class="tag ${color}" title="${color}" id="${text}" >
-                <p>${text}</p>
-                <svg class="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/></svg>    
-            </div>
-        `
-        )
-    }
-    search.addEventListener('keypress', function (e) {
-        let listItem = list.innerText
-        if (e.key === 'Enter' && !multicolor.innerText.includes(listItem)) {
-            
-            multicolor.insertAdjacentHTML("beforeend", model(listItem, colore))
-            search.value = ''
-            specificSort(listItem)
-        }
-    });
+    })
 }
 
 // fetch
@@ -102,6 +73,7 @@ const loadfoods = async () => {
     }
 };
 
+// display all the data 
 const displayfoods = (foods) => {
     const htmlString = foods
         .map((food) => {
@@ -119,7 +91,7 @@ const displayfoods = (foods) => {
                     </div>
                     <div class="bottom_post">
                         <ul class="ul_post" id="${id}">
-                        
+
                         </ul>
                         <p class="description">${description}</p>
                     </div>
@@ -127,69 +99,101 @@ const displayfoods = (foods) => {
             </div>`;
         }).join('');
     foodsList.innerHTML = htmlString;
+
+    //display the specific data on recepies card
     let ingDisponible = []
     let appDisponible = []
     let uteDisponible = []
     foods.forEach(e => {
-        let x = document.getElementById(e.id)
+        let post = document.getElementById(e.id)
         const {id, name, time, description, ingredients, appliance, ustensils} = e
-        let qqq = ingredients.map(function (ingredient) {
+        let ingrTLC = ingredients.map(function (ingredient) {
             ingDisponible.push(ingredient.ingredient)
             return ingredient.ingredient.toLowerCase()
         })
         appDisponible.push(appliance)
         for (let i = 0; i < ustensils.length; i++) {
-            const element = ustensils[i];
-            uteDisponible.push(element)
+            const e = ustensils[i];
+            uteDisponible.push(e)
         }
-        let www = ingredients.map(function (ingredient) {
+        let ingrQuantity = ingredients.map(function (ingredient) {
             return ingredient.quantity || ingredient.quantite
         })
-        let eee = ingredients.map(function (ingredient) {
-            return ingredient.unit 
-        })      
-        for (let i = 0; i < qqq.length; i++) {
-            const el = qqq[i];
-            const el1 = www[i]
-            const el2 = eee[i]
-            x.innerHTML += `<li>${el}: ${el1} ${el2}</li>`
+        let ingrUnit = ingredients.map(function (ingredient) {
+            return ingredient.unit
+        })
+        for (let i = 0; i < ingrTLC.length; i++) {
+            const iName = ingrTLC[i];
+            let iQuant = `: ${ingrQuantity[i]}`
+            let iUnit = ingrUnit[i]
+            if (ingrQuantity[i] === undefined) {
+                iQuant = ``
+            }
+            if (iUnit === undefined) {
+                iUnit = ``
+            }
+            post.innerHTML += `<li>${iName} ${iQuant} ${iUnit}</li>`
         }
     });
-    // display the element in the search bar 
+
+    // display the element in the search bar
     let childList = document.getElementsByClassName('listed');
     blueList.innerHTML = ``
     greenList.innerHTML = ``
     redList.innerHTML = ``
     new Set(ingDisponible).forEach(element => {
-        blueList.innerHTML += `<button name='btn_select'>${element}</button>`
+        blueList.innerHTML += `<button class='specificItem'>${element}</button>`
     });
     new Set(appDisponible).forEach(element => {
-        greenList.innerHTML += `<button name='btn_select'>${element}</button>`
-    });new Set(uteDisponible).forEach(element => {
-        redList.innerHTML += `<button name='btn_select'>${element}</button>`
+        greenList.innerHTML += `<button class='specificItem'>${element}</button>`
+    });
+    new Set(uteDisponible).forEach(element => {
+        redList.innerHTML += `<button class='specificItem'>${element}</button>`
     });
 
+    // display and use the specific dropdown menu
     for (let i = 0; i < dropDown.length; i++) {
         const element = dropDown[i];
         element.addEventListener('click', () =>{
-            let subElement = element.nextElementSibling;
+            let subElement = document.querySelector(`[name=${element.previousElementSibling.id}]`).parentElement;
             subElement.classList.toggle("d-none");
+            for (let i = 0; i < specificItem.length; i++) {
+                const el = specificItem[i];
+                el.addEventListener('click', () => {
+                    let color = el.parentElement.attributes[0].value
+                    let spec = el.innerText
+                    let elDuplicate = document.querySelectorAll(`[name='${spec}']`)
+                    if (elDuplicate.length == 0) {
+                        specificPlace.innerHTML += `
+                        <div class="tag ${color}" title="${color}" name="${spec}" >
+                            <p>${spec}</p>
+                            <svg class="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/></svg>
+                        </div>
+                        `
+                    } else {
+                        return
+                    }
+                })
+            }
         })
     }
 
-    for (let i = 0; i < document.querySelectorAll('[name=btn_select]').length; i++) {
-        const element = document.querySelectorAll('[name=btn_select]')[i];
-        element.addEventListener('click', () => {
-              
-            let xxx = element.parentElement
-            let place = xxx.attributes[0].value
-            document.getElementById(place).value = element.innerText  
-            // hai preso il nome del input richiesto
-            //console.log(xxx.querySelectorAll('[name=btn_select]'))
-
-        })
+    // eliminate the specific element not searched
+    for (let i = 0; i < specificSearch.length; i++) {
+        const e = specificSearch[i];
+        let input = e.value.toLowerCase();
+        let list = document.querySelector(`[name=${e.id}]`);
+        for (let i = 0; i < list.childNodes.length; i++) {
+            const el = list.childNodes[i];
+            if (!el.innerText.toLowerCase().includes(input)) {
+                el.classList.add("d-none")
+            }
+        }
     }
-    
+
+    if (foodsList.childNodes.length == 0) {
+        foodsList.innerHTML += `<div class="not-found"><p>Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc.</p></div>`
+    }
 };
 
 loadfoods();
