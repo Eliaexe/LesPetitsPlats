@@ -4,11 +4,12 @@ let cardContainer = document.getElementById('cardContainer');
 const loadfoods = async () => {
   try {
       const res = await fetch('recipes.json');
-      data = await res.json();
+      let data = await res.json();
       let food = data.recipes;
       //console.log(food); 
-      //showRecipes(food)
+      showRecipes(food)
       search(food)
+      dropDown()
   } catch (err) {
       console.error(err);
   }
@@ -110,23 +111,25 @@ function displayResoults(e, place, names) {
                 })
             }
         })
-        
-    }
-
-
-
-
-    // // for (let i = 0; i < toListPosition.length; i++) {
-    // //     const e = toListPosition[i];
-    // //     console.log(e);
-    // //     }
-    // //     if (document.getElementById(e.id) == null) {
-    // //         displayCard(e)        
-    // //     }    
+               
+    } 
 }
 
-
-
+function dropDown(){
+    let dropIcon = document.querySelectorAll('span')
+    for (let i = 0; i < dropIcon.length; i++) {
+        const e = dropIcon[i];
+        e.addEventListener('click', () => {
+            let dropContainer = e.parentElement.parentElement
+            dropContainer.classList.toggle('disponible')
+            if (dropContainer.classList.contains('disponible') == true) {
+                dropContainer.children[1].style.display = 'block'                
+            } else if (dropContainer.classList.contains('disponible') == false) {
+                dropContainer.children[1].style.display = 'none'                
+            }
+        })
+    }
+}
 
 function search (e) {
   e.map((food) => {
