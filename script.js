@@ -9,7 +9,7 @@ const loadfoods = async () => {
       //console.log(food); 
       showRecipes(food)
       search(food)
-      dropDown()
+      dropDown(food)
   } catch (err) {
       console.error(err);
   }
@@ -115,7 +115,7 @@ function displayResoults(e, place, names) {
     } 
 }
 
-function dropDown(){
+function dropDown(food){
     let dropIcon = document.querySelectorAll('span')
     for (let i = 0; i < dropIcon.length; i++) {
         const e = dropIcon[i];
@@ -123,7 +123,8 @@ function dropDown(){
             let dropContainer = e.parentElement.parentElement
             dropContainer.classList.toggle('disponible')
             if (dropContainer.classList.contains('disponible') == true) {
-                dropContainer.children[1].style.display = 'block'                
+                dropContainer.children[1].style.display = 'block'
+                randomSelection(food, dropContainer.children[0].children[0].placeholder.toLowerCase())         
             } else if (dropContainer.classList.contains('disponible') == false) {
                 dropContainer.children[1].style.display = 'none'                
             }
@@ -131,6 +132,36 @@ function dropDown(){
     }
 }
 
+//take all the data in base of the user selection and store those in new set array
+function randomSelection(foods, type) {
+    let showIngredient = []
+    let showAppareils = []
+    let showUtensils = []
+
+    foods.map((food) => {
+        const {id, name, time, description, ingredients, appliance, ustensils} = food
+        let ingredient = ingredients.map((x) => {
+            return x.ingredient
+        })
+        for (let i = 0; i < ingredient.length; i++) {
+            const e = ingredient[i];
+            showIngredient.push(e)
+        }
+        showAppareils.push(appliance)
+        for (let i = 0; i < ustensils.length; i++) {
+            const e = ustensils[i];
+            showUtensils.push(e)
+        }
+    })
+
+    if (type == 'ingredients') {
+        console.log([...new Set(showIngredient)]);
+    } else if (type == 'appareils') {
+        console.log([...new Set(showAppareils)])
+    } else if (type == 'utensiles') {
+        console.log([...new Set(showUtensils)])
+    }
+}
 function search (e) {
   e.map((food) => {
     const {id, name, time, description, ingredients, appliance, ustensils} = food

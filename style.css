@@ -381,7 +381,7 @@ main{
 
 .filter {
     display: inline-flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     flex-wrap: wrap;
     
@@ -487,4 +487,13 @@ main{
     height: 16px;
     margin: 6px 6px 6px 11px;
     
+}
+
+.top-bar{
+    margin-top: 15px;
+    width: 100%;
+}
+
+.rotate {
+    transform: rotateY(180deg);
 }
