@@ -143,6 +143,9 @@ function randomSelection(foods, type) {
         let ingredient = ingredients.map((x) => {
             return x.ingredient
         })
+        if (document.getElementsByClassName(id)) {
+            console.log(name);
+        }
         for (let i = 0; i < ingredient.length; i++) {
             const e = ingredient[i];
             showIngredient.push(e)
@@ -154,6 +157,8 @@ function randomSelection(foods, type) {
         }
     })
 
+    // console.log(document.getElementsByClassName('post'))
+    
     if (type == 'ingredients') {
         console.log([...new Set(showIngredient)]);
     } else if (type == 'appareils') {
