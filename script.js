@@ -143,21 +143,19 @@ function randomSelection(foods, type) {
         let ingredient = ingredients.map((x) => {
             return x.ingredient
         })
-        if (document.getElementsByClassName(id)) {
-            console.log(name);
-        }
-        for (let i = 0; i < ingredient.length; i++) {
-            const e = ingredient[i];
-            showIngredient.push(e)
-        }
-        showAppareils.push(appliance)
-        for (let i = 0; i < ustensils.length; i++) {
-            const e = ustensils[i];
-            showUtensils.push(e)
+        if (document.getElementsByClassName(id).length == 1) {
+            for (let i = 0; i < ingredient.length; i++) {
+                const e = ingredient[i];
+                showIngredient.push(e)
+            }
+            showAppareils.push(appliance)
+            for (let i = 0; i < ustensils.length; i++) {
+                const e = ustensils[i];
+                showUtensils.push(e)    
+            }
+                
         }
     })
-
-    // console.log(document.getElementsByClassName('post'))
     
     if (type == 'ingredients') {
         console.log([...new Set(showIngredient)]);
@@ -167,6 +165,7 @@ function randomSelection(foods, type) {
         console.log([...new Set(showUtensils)])
     }
 }
+
 function search (e) {
   e.map((food) => {
     const {id, name, time, description, ingredients, appliance, ustensils} = food
