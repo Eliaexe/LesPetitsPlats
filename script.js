@@ -71,7 +71,7 @@ function displayResoults(e, place, names) {
     let parentList = list.parentNode.classList;
     let allIcons = document.querySelectorAll("[alt='x-icon']")
     // let disponible = document.getElementsByClassName('disponible')
-
+console.log(e);
     for (let i = 0; i < names.length; i++) {
         const e = names[i];
         // console.log(list.childNodes);
