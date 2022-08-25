@@ -63,7 +63,6 @@ function displayCard(obj) {
 }
 
 
-
 function displayResoults(e, place, names) {
 
     let toListPosition = document.querySelectorAll(`[placeholder=${place}]`)[0].parentNode.parentNode; //.children
@@ -71,14 +70,13 @@ function displayResoults(e, place, names) {
     let parentList = list.parentNode.classList;
     let allIcons = document.querySelectorAll("[alt='x-icon']")
     // let disponible = document.getElementsByClassName('disponible')
-console.log(e);
+    console.log(e);
     for (let i = 0; i < names.length; i++) {
         const e = names[i];
         // console.log(list.childNodes);
         if (list.innerHTML.includes(e) == false && list.childNodes.length < 30) {
             list.innerHTML += `<li>${e}</li>`
         }
-        console.log();
     }
 
     for (let i = 0; i < list.childNodes.length; i++) {
@@ -115,6 +113,7 @@ console.log(e);
     } 
 }
 
+//dropdown open and close
 function dropDown(food){
     let dropIcon = document.querySelectorAll('span')
     for (let i = 0; i < dropIcon.length; i++) {
@@ -139,7 +138,14 @@ function randomSelection(foods, type) {
     let showUtensils = []
 
     foods.map((food) => {
-        const {id, name, time, description, ingredients, appliance, ustensils} = food
+        const {id,
+             name, 
+             time, 
+             description, 
+             ingredients, 
+             appliance, 
+             ustensils
+            } = food
         let ingredient = ingredients.map((x) => {
             return x.ingredient
         })
@@ -153,11 +159,11 @@ function randomSelection(foods, type) {
                 const e = ustensils[i];
                 showUtensils.push(e)    
             }
-                
         }
     })
     
     if (type == 'ingredients') {
+        refreshDropDown([...new Set(showIngredient)])
         console.log([...new Set(showIngredient)]);
     } else if (type == 'appareils') {
         console.log([...new Set(showAppareils)])
