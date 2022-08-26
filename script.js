@@ -1,5 +1,6 @@
 let cardContainer = document.getElementById('cardContainer');
-
+let input = document.getElementsByClassName('input');
+let idToDisplay = []
 // fetch
 const loadfoods = async () => {
   try {
@@ -7,8 +8,8 @@ const loadfoods = async () => {
       let data = await res.json();
       let food = data.recipes;
       //console.log(food); 
-      showRecipes(food)
       search(food)
+      showRecipes(food)
       dropDown(food)
   } catch (err) {
       console.error(err);
@@ -63,54 +64,12 @@ function displayCard(obj) {
 }
 
 
-function displayResoults(e, place, names) {
-
-    let toListPosition = document.querySelectorAll(`[placeholder=${place}]`)[0].parentNode.parentNode; //.children
-    let list = toListPosition.childNodes[3];
-    let parentList = list.parentNode.classList;
-    let allIcons = document.querySelectorAll("[alt='x-icon']")
-    // let disponible = document.getElementsByClassName('disponible')
-    console.log(e);
-    for (let i = 0; i < names.length; i++) {
-        const e = names[i];
-        // console.log(list.childNodes);
-        if (list.innerHTML.includes(e) == false && list.childNodes.length < 30) {
-            list.innerHTML += `<li>${e}</li>`
-        }
-    }
-
-    for (let i = 0; i < list.childNodes.length; i++) {
-        const singleResoult = list.childNodes[i];
-        let icon = `<img src="/img/remove-icon.png" alt="x-icon">`
-        
-        
-        // click on the list item
-        singleResoult.addEventListener('click', () => {
-            let selectedListed = document.getElementById('specificSelected')
-            if (selectedListed.innerHTML.toLowerCase().includes(singleResoult) == false) {
-                // give the bg color
-                for (let i = 0; i < parentList.length; i++) {
-                    const e = parentList[i];
-                    if (e.includes('blue')) {
-                        singleResoult.classList.add('blue--bg')
-                    } else if (e.includes('green')){
-                        singleResoult.classList.add('green--bg')
-                    } else if (e.includes('red')){
-                        singleResoult.classList.add('red--bg')
-                    }
-                }
-                let clone = singleResoult.cloneNode(true)
-                // transfer item to top
-                selectedListed.appendChild(clone)  
-                clone.innerHTML += icon
-                //close item to top
-                clone.childNodes[1].addEventListener('click', () => {
-                    clone.remove()
-                })
-            }
-        })
-               
-    } 
+function displayResoults(e) {
+    post = document.getElementById(e.id)
+    if (post == null) {
+        displayCard(e)    
+    } else if (post != null)
+        console.log('esiste');
 }
 
 //dropdown open and close
@@ -123,7 +82,7 @@ function dropDown(food){
             dropContainer.classList.toggle('disponible')
             if (dropContainer.classList.contains('disponible') == true) {
                 dropContainer.children[1].style.display = 'block'
-                randomSelection(food, dropContainer.children[0].children[0].placeholder.toLowerCase())         
+                randomSelection(food, dropContainer.children[0].children[0].placeholder)         
             } else if (dropContainer.classList.contains('disponible') == false) {
                 dropContainer.children[1].style.display = 'none'                
             }
@@ -162,51 +121,71 @@ function randomSelection(foods, type) {
         }
     })
     
-    if (type == 'ingredients') {
-        refreshDropDown([...new Set(showIngredient)])
+    if (type == 'Ingredients') {
+        refreshDropDown([...new Set(showIngredient)], type)
         console.log([...new Set(showIngredient)]);
-    } else if (type == 'appareils') {
-        console.log([...new Set(showAppareils)])
-    } else if (type == 'utensiles') {
-        console.log([...new Set(showUtensils)])
+    } else if (type == 'Appareils') {
+        refreshDropDown([...new Set(showAppareils)], type)
+    } else if (type == 'Utensiles') {
+        refreshDropDown([...new Set(showUtensils)], type)
     }
 }
 
+function refreshDropDown(arr, place) {
+    let putHere = document.querySelector(`[placeholder=${place}]`).parentNode.parentNode.children[1]
+    putHere.innerHTML = ``
+    for (let i = 0; i < arr.length; i++) {
+        const e = arr[i];
+        //console.log(e);
+        putHere.innerHTML += `<li>${e}</li>`
+    }
+    
+}
+
 function search (e) {
-  e.map((food) => {
-    const {id, name, time, description, ingredients, appliance, ustensils} = food
-    let ingredient = ingredients.map((x) => {
-        return x.ingredient
-    })
-    //console.log(id);
-    let input = document.getElementsByClassName('input');
-    //console.log(input);
+        e.map((food) => {
+        
+        const {id, name, time, description, ingredients, appliance, ustensils} = food
+        let ingredient = ingredients.map((x) => {
+            return x.ingredient
+        })        
+        //console.log(input);
         for (let i = 0; i < input.length; i++) {
             const el = input[i];
-            el.addEventListener('keyup', () => {
-                //console.log(el.value, el.placeholder);
-                let searchString = el.value.toLowerCase().trim()
-                //console.log(searchString);
-                if (el.value.length >= 3) {
+        el.addEventListener('input', (event) => {
+            //console.log(el.value, el.placeholder);
+           let searchString = el.value.toLowerCase().trim()
+            
+            //console.log(searchString);
+            if (el.value.length >= 3) {
+                                
                     if (el.placeholder == 'Ingredients' && 
                         ingredient.join(',').toLowerCase().includes(searchString)) {
-                        displayResoults(food, el.placeholder, ingredient)
+                        // displayResoults(food)
+                        idToDisplay.push(food.id)
+                        console.log(food.id);
 
                     } else if (el.placeholder == 'Appareils' && appliance.toLowerCase().includes(searchString)) {
-                        displayResoults(food, el.placeholder, appliance);
+                        // displayResoults(food)
+                        idToDisplay.push(food.id)
+                        console.log(food.id);
                     } else if (el.placeholder == 'Utensiles' && ustensils.join(',').toLowerCase().includes(searchString)) {
-                        displayResoults(food, el.placeholder, ustensils);
-
+                        // displayResoults(food)
+                        idToDisplay.push(food.id)
+                        console.log(food.id);
                     } else if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && (
                                 food.name.toLowerCase().includes(searchString) ||
                                 food.description.toLowerCase().includes(searchString) ||
                                 ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
-                        displayResoults(food);
+                                    displayResoults(food)
+                                    idToDisplay.push(food.id)
                     }
+                    console.log(idToDisplay);
+                    
                 } else {
                     console.log('nope');
                 }
             })
-        }    
+        }   
     })
 }

@@ -451,6 +451,7 @@ main{
 }
 
 .un-list li {
+    display: inline-flex;
     width: 200px;
     font-family: Lato;
     font-size: 18px;
