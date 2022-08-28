@@ -1,6 +1,6 @@
 let cardContainer = document.getElementById('cardContainer');
 let input = document.getElementsByClassName('input');
-let idToDisplay = []
+
 // fetch
 const loadfoods = async () => {
   try {
@@ -8,7 +8,7 @@ const loadfoods = async () => {
       let data = await res.json();
       let food = data.recipes;
       //console.log(food); 
-      search(food)
+      search(food)      
       showRecipes(food)
       dropDown(food)
   } catch (err) {
@@ -70,6 +70,10 @@ function displayResoults(e) {
         displayCard(e)    
     } else if (post != null)
         console.log('esiste');
+}
+
+function provaRR(arr) {
+    console.log(arr);
 }
 
 //dropdown open and close
@@ -143,49 +147,50 @@ function refreshDropDown(arr, place) {
 }
 
 function search (e) {
-        e.map((food) => {
-        
+    let idToDisplay = []
+    let arrX = [...new Set(idToDisplay)]
+    e.map((food) => {
         const {id, name, time, description, ingredients, appliance, ustensils} = food
+            
+            
         let ingredient = ingredients.map((x) => {
             return x.ingredient
         })        
-        //console.log(input);
+
         for (let i = 0; i < input.length; i++) {
             const el = input[i];
-        el.addEventListener('input', (event) => {
-            //console.log(el.value, el.placeholder);
-           let searchString = el.value.toLowerCase().trim()
-            
-            //console.log(searchString);
-            if (el.value.length >= 3) {
-                                
+            el.addEventListener('input', (event) => {
+                // console.log(...new Set(idToDisplay));
+                    
+                
+            let searchString = event.target.value.toLowerCase().trim()
+                if (event.target.value.length >= 3) {        
                     if (el.placeholder == 'Ingredients' && 
                         ingredient.join(',').toLowerCase().includes(searchString)) {
                         // displayResoults(food)
                         idToDisplay.push(food.id)
-                        console.log(food.id);
 
                     } else if (el.placeholder == 'Appareils' && appliance.toLowerCase().includes(searchString)) {
                         // displayResoults(food)
                         idToDisplay.push(food.id)
-                        console.log(food.id);
                     } else if (el.placeholder == 'Utensiles' && ustensils.join(',').toLowerCase().includes(searchString)) {
                         // displayResoults(food)
                         idToDisplay.push(food.id)
-                        console.log(food.id);
                     } else if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && (
                                 food.name.toLowerCase().includes(searchString) ||
                                 food.description.toLowerCase().includes(searchString) ||
                                 ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
-                                    displayResoults(food)
+                                    //displayResoults(food)
                                     idToDisplay.push(food.id)
                     }
-                    console.log(idToDisplay);
-                    
-                } else {
-                    console.log('nope');
-                }
-            })
+                    } else {
+                        console.log('nope');
+                    }
+                })
         }   
     })
+
+    return idToDisplay;
 }
+
+
