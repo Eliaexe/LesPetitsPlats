@@ -35,7 +35,7 @@ function cleanRecepies() {
 function displayCard(obj) {
   let cardContainer = document.getElementById('cardContainer');
   let card = `
-  <div class="post ${obj.id}">
+  <div class="post" id="${obj.id}">
       <div class="top_post"></div>
       <div class="pad">
           <div class="middle_post">
@@ -46,8 +46,8 @@ function displayCard(obj) {
               </div>
           </div>
           <div class="bottom_post">
-              <ul class="ul_post" id="${obj.id}">
-
+              <ul class="ul_post" >
+              <div class="prova"></div>
               </ul>
               <p class="description">${obj.description}</p>
           </div>
@@ -59,7 +59,8 @@ function displayCard(obj) {
   let ingredients = obj.ingredients
   for (let i = 0; i < ingredients.length; i++) {
     const ele = ingredients[i];
-    document.getElementById(obj.id).innerHTML += `<li>${ele.ingredient}: ${ele.quantity} ${ele.unit}</li>`
+    document.getElementById(obj.id).querySelector('.ul_post').innerHTML += `<li>${ele.ingredient}: ${ele.quantity} ${ele.unit}</li>`
+    console.log();
   }
 }
 
@@ -146,50 +147,82 @@ function refreshDropDown(arr, place) {
     
 }
 
-function search (e) {
-    let idToDisplay = []
-    let arrX = [...new Set(idToDisplay)]
-    e.map((food) => {
-        const {id, name, time, description, ingredients, appliance, ustensils} = food
-            
-            
-        let ingredient = ingredients.map((x) => {
-            return x.ingredient
-        })        
-
-        for (let i = 0; i < input.length; i++) {
-            const el = input[i];
-            el.addEventListener('input', (event) => {
-                // console.log(...new Set(idToDisplay));
-                    
-                
-            let searchString = event.target.value.toLowerCase().trim()
-                if (event.target.value.length >= 3) {        
-                    if (el.placeholder == 'Ingredients' && 
-                        ingredient.join(',').toLowerCase().includes(searchString)) {
-                        // displayResoults(food)
-                        idToDisplay.push(food.id)
-
-                    } else if (el.placeholder == 'Appareils' && appliance.toLowerCase().includes(searchString)) {
-                        // displayResoults(food)
-                        idToDisplay.push(food.id)
-                    } else if (el.placeholder == 'Utensiles' && ustensils.join(',').toLowerCase().includes(searchString)) {
-                        // displayResoults(food)
-                        idToDisplay.push(food.id)
-                    } else if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && !(
-                                food.name.toLowerCase().includes(searchString) ||
-                                food.description.toLowerCase().includes(searchString) ||
-                                ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
-                                    //displayResoults(food)
-                                    console.log(document.getElementById(food.id).parentElement.parentElement.parentElement.classList.add('d-none'))
-                                    
-                    }
-                    } else {
-                        console.log('nope');
-                    }
-                })
-        }   
-    })
+function resetRecepies() {
+    for (let index = 0; index < document.getElementsByClassName('post').length; index++) {
+        const element = document.getElementsByClassName('post')[index];
+        if (element.classList.contains('d-none') == true) {
+            element.classList.remove('d-none')
+        }
+    } 
 }
 
+function search (e) {
+    let idToDisplay = []
+    var arrX = [...new Set(idToDisplay)]
+    // e.map((food) => {
+    //     const {id, name, time, description, ingredients, appliance, ustensils} = food
+    //     let ingredient = ingredients.map((x) => {
+    //         return x.ingredient
+    //     })        
+        
+    //     for (let i = 0; i < input.length; i++) {
+    //         const el = input[i];
+    //         el.addEventListener('input', (event) => {
+    //             // console.log(...new Set(idToDisplay));
+    //             let recepiesFromId = document.getElementById(food.id).parentElement.parentElement.parentElement
+    //             let searchString = event.target.value.toLowerCase().trim()
+                
+                
+    //             if (event.target.value.length >= 3) {        
+    //                 if (el.placeholder == 'Ingredients' && 
+    //                     ingredient.join(',').toLowerCase().includes(searchString)) {
+    //                     // displayResoults(food)
+                        
 
+    //                 } else if (el.placeholder == 'Appareils' && appliance.toLowerCase().includes(searchString)) {
+    //                     // displayResoults(food)
+                        
+    //                 } else if (el.placeholder == 'Utensiles' && ustensils.join(',').toLowerCase().includes(searchString)) {
+    //                     // displayResoults(food)
+                        
+    //                 } else if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && !(
+    //                             food.name.toLowerCase().includes(searchString) ||
+    //                             food.description.toLowerCase().includes(searchString) ||
+    //                             ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
+    //                                 //displayResoults(food)
+    //                                 console.log(searchString, food.id);
+    //                                 recepiesFromId.classList.add('d-none')                                    
+    //                 }                    
+    //             }
+    //         })
+    //     }   
+    // })
+    
+
+    for (let i = 0; i < input.length; i++) {
+        const el = input[i];
+        
+        el.addEventListener('input', (event) => { 
+            let searchString = event.target.value.toLowerCase().trim()
+            console.log(searchString);
+            let recepiesMapping = e.map((food) => {
+                const {id, name, time, description, ingredients, appliance, ustensils} = food 
+                if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && !(
+                    food.name.toLowerCase().includes(searchString) ||
+                    food.description.toLowerCase().includes(searchString) ||
+                    ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
+                        return id                                   
+                }                    
+            })
+            console.clear()
+            console.log(recepiesMapping);
+            for (let i = 0; i < recepiesMapping.length; i++) {
+                const ele = recepiesMapping[i];
+                let recepiesDisplaied = document.getElementById(ele);
+                console.log(recepiesDisplaied, ele);                
+                // if (ele != undefined && recepiesDisplaied != null) {
+                //     recepiesDisplaied.classList.add('d-none')                
+                // } 
+            }
+        })}
+}
