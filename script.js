@@ -215,14 +215,17 @@ function search (e) {
                 }                    
             })
             console.clear()
-            console.log(recepiesMapping);
-            for (let i = 0; i < recepiesMapping.length; i++) {
-                const ele = recepiesMapping[i];
+            resetRecepies()
+            let showThis = recepiesMapping.filter((x) => {
+                return x !== undefined
+            })
+            for (let i = 0; i < showThis.length; i++) {
+                const ele = showThis[i];
                 let recepiesDisplaied = document.getElementById(ele);
                 console.log(recepiesDisplaied, ele);                
-                // if (ele != undefined && recepiesDisplaied != null) {
-                //     recepiesDisplaied.classList.add('d-none')                
-                // } 
+                if (ele != undefined && recepiesDisplaied != null) {
+                    recepiesDisplaied.classList.add('d-none')                
+                } 
             }
         })}
 }
