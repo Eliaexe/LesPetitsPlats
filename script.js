@@ -176,12 +176,13 @@ function search (e) {
                     } else if (el.placeholder == 'Utensiles' && ustensils.join(',').toLowerCase().includes(searchString)) {
                         // displayResoults(food)
                         idToDisplay.push(food.id)
-                    } else if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && (
+                    } else if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && !(
                                 food.name.toLowerCase().includes(searchString) ||
                                 food.description.toLowerCase().includes(searchString) ||
                                 ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
                                     //displayResoults(food)
-                                    idToDisplay.push(food.id)
+                                    console.log(document.getElementById(food.id).parentElement.parentElement.parentElement.classList.add('d-none'))
+                                    
                     }
                     } else {
                         console.log('nope');
@@ -189,8 +190,6 @@ function search (e) {
                 })
         }   
     })
-
-    return idToDisplay;
 }
 
 
