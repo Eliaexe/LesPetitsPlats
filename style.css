@@ -151,7 +151,7 @@ nav {
 }
 
 .d-none {
-    display: none;
+    display: none !important;
 }
 
 .listed {
@@ -190,7 +190,15 @@ main{
     margin-top: 6rem;
 }
 
+#cardContainer{
+    display: contents;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 .post{
+    display: inline-block;
     height: 364px;
     width: 380px;
     border-radius: 5px;

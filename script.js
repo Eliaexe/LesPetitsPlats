@@ -35,7 +35,7 @@ function cleanRecepies() {
 function displayCard(obj) {
   let cardContainer = document.getElementById('cardContainer');
   let card = `
-  <div class="post" id="${obj.id}">
+  <article class="post" id="${obj.id}">
       <div class="top_post"></div>
       <div class="pad">
           <div class="middle_post">
@@ -52,7 +52,7 @@ function displayCard(obj) {
               <p class="description">${obj.description}</p>
           </div>
       </div>
-  </div>
+  </article>
   `
   cardContainer.innerHTML += card
   //display single ingredients in his card
@@ -60,7 +60,6 @@ function displayCard(obj) {
   for (let i = 0; i < ingredients.length; i++) {
     const ele = ingredients[i];
     document.getElementById(obj.id).querySelector('.ul_post').innerHTML += `<li>${ele.ingredient}: ${ele.quantity} ${ele.unit}</li>`
-    console.log();
   }
 }
 
@@ -87,7 +86,8 @@ function dropDown(food){
             dropContainer.classList.toggle('disponible')
             if (dropContainer.classList.contains('disponible') == true) {
                 dropContainer.children[1].style.display = 'block'
-                randomSelection(food, dropContainer.children[0].children[0].placeholder)         
+                // randomSelection(food, dropContainer.children[0].children[0].placeholder)         
+                sortSpecific()
             } else if (dropContainer.classList.contains('disponible') == false) {
                 dropContainer.children[1].style.display = 'none'                
             }
@@ -95,57 +95,60 @@ function dropDown(food){
     }
 }
 
-//take all the data in base of the user selection and store those in new set array
-function randomSelection(foods, type) {
-    let showIngredient = []
-    let showAppareils = []
-    let showUtensils = []
-
-    foods.map((food) => {
-        const {id,
-             name, 
-             time, 
-             description, 
-             ingredients, 
-             appliance, 
-             ustensils
-            } = food
-        let ingredient = ingredients.map((x) => {
-            return x.ingredient
-        })
-        if (document.getElementsByClassName(id).length == 1) {
-            for (let i = 0; i < ingredient.length; i++) {
-                const e = ingredient[i];
-                showIngredient.push(e)
-            }
-            showAppareils.push(appliance)
-            for (let i = 0; i < ustensils.length; i++) {
-                const e = ustensils[i];
-                showUtensils.push(e)    
-            }
-        }
-    })
-    
-    if (type == 'Ingredients') {
-        refreshDropDown([...new Set(showIngredient)], type)
-        console.log([...new Set(showIngredient)]);
-    } else if (type == 'Appareils') {
-        refreshDropDown([...new Set(showAppareils)], type)
-    } else if (type == 'Utensiles') {
-        refreshDropDown([...new Set(showUtensils)], type)
-    }
+function sortSpecific() {
+    let relevant = document.querySelectorAll('article:not(.d-none)')
+    console.log(Array.from(relevant, x => x.id));
 }
 
-function refreshDropDown(arr, place) {
-    let putHere = document.querySelector(`[placeholder=${place}]`).parentNode.parentNode.children[1]
-    putHere.innerHTML = ``
-    for (let i = 0; i < arr.length; i++) {
-        const e = arr[i];
-        //console.log(e);
-        putHere.innerHTML += `<li>${e}</li>`
-    }
+// //take all the data in base of the user selection and store those in new set array
+// function randomSelection(foods, type) {
+//     let showIngredient = []
+//     let showAppareils = []
+//     let showUtensils = []
+
+//     foods.map((food) => {
+//         const {id,
+//              name, 
+//              time, 
+//              description, 
+//              ingredients, 
+//              appliance, 
+//              ustensils
+//             } = food
+//         let ingredient = ingredients.map((x) => {
+//             return x.ingredient
+//         })
+//         if (document.getElementsByClassName(id).length == 1) {
+//             for (let i = 0; i < ingredient.length; i++) {
+//                 const e = ingredient[i];
+//                 showIngredient.push(e)
+//             }
+//             showAppareils.push(appliance)
+//             for (let i = 0; i < ustensils.length; i++) {
+//                 const e = ustensils[i];
+//                 showUtensils.push(e)    
+//             }
+//         }
+//     })
     
-}
+//     if (type == 'Ingredients') {
+//         refreshDropDown([...new Set(showIngredient)], type)
+//         console.log([...new Set(showIngredient)]);
+//     } else if (type == 'Appareils') {
+//         refreshDropDown([...new Set(showAppareils)], type)
+//     } else if (type == 'Utensiles') {
+//         refreshDropDown([...new Set(showUtensils)], type)
+//     }
+// }
+
+// function refreshDropDown(arr, place) {
+//     let putHere = document.querySelector(`[placeholder=${place}]`).parentNode.parentNode.children[1]
+//     putHere.innerHTML = ``
+//     for (let i = 0; i < arr.length; i++) {
+//         const e = arr[i];
+//         putHere.innerHTML += `<li>${e}</li>`
+//     }
+// }
 
 function resetRecepies() {
     for (let index = 0; index < document.getElementsByClassName('post').length; index++) {
@@ -157,75 +160,31 @@ function resetRecepies() {
 }
 
 function search (e) {
-    let idToDisplay = []
-    var arrX = [...new Set(idToDisplay)]
-    // e.map((food) => {
-    //     const {id, name, time, description, ingredients, appliance, ustensils} = food
-    //     let ingredient = ingredients.map((x) => {
-    //         return x.ingredient
-    //     })        
-        
-    //     for (let i = 0; i < input.length; i++) {
-    //         const el = input[i];
-    //         el.addEventListener('input', (event) => {
-    //             // console.log(...new Set(idToDisplay));
-    //             let recepiesFromId = document.getElementById(food.id).parentElement.parentElement.parentElement
-    //             let searchString = event.target.value.toLowerCase().trim()
-                
-                
-    //             if (event.target.value.length >= 3) {        
-    //                 if (el.placeholder == 'Ingredients' && 
-    //                     ingredient.join(',').toLowerCase().includes(searchString)) {
-    //                     // displayResoults(food)
-                        
-
-    //                 } else if (el.placeholder == 'Appareils' && appliance.toLowerCase().includes(searchString)) {
-    //                     // displayResoults(food)
-                        
-    //                 } else if (el.placeholder == 'Utensiles' && ustensils.join(',').toLowerCase().includes(searchString)) {
-    //                     // displayResoults(food)
-                        
-    //                 } else if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && !(
-    //                             food.name.toLowerCase().includes(searchString) ||
-    //                             food.description.toLowerCase().includes(searchString) ||
-    //                             ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
-    //                                 //displayResoults(food)
-    //                                 console.log(searchString, food.id);
-    //                                 recepiesFromId.classList.add('d-none')                                    
-    //                 }                    
-    //             }
-    //         })
-    //     }   
-    // })
-    
-
     for (let i = 0; i < input.length; i++) {
         const el = input[i];
-        
         el.addEventListener('input', (event) => { 
             let searchString = event.target.value.toLowerCase().trim()
-            console.log(searchString);
             let recepiesMapping = e.map((food) => {
                 const {id, name, time, description, ingredients, appliance, ustensils} = food 
                 if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && !(
-                    food.name.toLowerCase().includes(searchString) ||
-                    food.description.toLowerCase().includes(searchString) ||
+                    name.toLowerCase().includes(searchString) ||
+                    description.toLowerCase().includes(searchString) ||
                     ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
-                        return id                                   
+                        return food                                   
                 }                    
             })
             console.clear()
             resetRecepies()
             let showThis = recepiesMapping.filter((x) => {
                 return x !== undefined
-            })
+            }) 
             for (let i = 0; i < showThis.length; i++) {
                 const ele = showThis[i];
-                let recepiesDisplaied = document.getElementById(ele);
-                console.log(recepiesDisplaied, ele);                
-                if (ele != undefined && recepiesDisplaied != null) {
+                let recepiesDisplaied = document.getElementById(ele.id);
+                if (ele.id != undefined && recepiesDisplaied != null) {
                     recepiesDisplaied.classList.add('d-none')                
-                } 
-            }
-        })}
+                }
+            }            
+        })
+    }
 }
