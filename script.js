@@ -87,7 +87,7 @@ function dropDown(food){
             if (dropContainer.classList.contains('disponible') == true) {
                 dropContainer.children[1].style.display = 'block'
                 // randomSelection(food, dropContainer.children[0].children[0].placeholder)         
-                sortSpecific()
+                sortSpecific(food)
             } else if (dropContainer.classList.contains('disponible') == false) {
                 dropContainer.children[1].style.display = 'none'                
             }
@@ -95,9 +95,11 @@ function dropDown(food){
     }
 }
 
-function sortSpecific() {
+function sortSpecific(food) {
     let relevant = document.querySelectorAll('article:not(.d-none)')
-    console.log(Array.from(relevant, x => x.id));
+    let relevantId = Array.from(relevant, x => x.id)
+    let lookingFor = relevantId.map((x) => { return food.find(element => element.id == x) })
+    console.log(lookingFor);
 }
 
 // //take all the data in base of the user selection and store those in new set array
