@@ -72,26 +72,6 @@ nav {
   position: absolute;
 }
 
-.container_nav {
-    display: inline-flex;
-    position: relative;
-    background-size: 300% 100%;
-    border-radius: 5px;
-    color: #ffff;
-    font-weight: bold;
-    border: none;
-    text-align: center;
-    max-width: 29.6vw;
-    max-height: auto;
-}
-
-.container_nav svg{
-    margin-left: 31px;
-    width: 16px;
-    filter: invert(97%) sepia(10%) saturate(0%) hue-rotate(90deg) brightness(104%) contrast(104%);
-}
-
-
 .container-button{
     margin-right: 20px;
     padding: 23px;
@@ -355,7 +335,6 @@ main{
     height: 80%;
     width: 100%;
     margin-left: 15px;
-    line-height: 21,6px;
 }
 
 .big-search svg{

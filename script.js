@@ -1,5 +1,7 @@
 let cardContainer = document.getElementById('cardContainer');
 let input = document.getElementsByClassName('input');
+let listForSearch = document.getElementById('specificSelected')
+
 
 // fetch
 const loadfoods = async () => {
@@ -7,7 +9,6 @@ const loadfoods = async () => {
       const res = await fetch('recipes.json');
       let data = await res.json();
       let food = data.recipes;
-      //console.log(food); 
       search(food)      
       showRecipes(food)
       dropDown(food)
@@ -24,11 +25,6 @@ function showRecipes(e){
     const el = e[i];
     displayCard(el)
   }
-}
-
-//clean the card container
-function cleanRecepies() {
-    cardContainer.innerHTML = ``
 }
 
 //display all the card disponible
@@ -63,19 +59,6 @@ function displayCard(obj) {
   }
 }
 
-
-function displayResoults(e) {
-    post = document.getElementById(e.id)
-    if (post == null) {
-        displayCard(e)    
-    } else if (post != null)
-        console.log('esiste');
-}
-
-function provaRR(arr) {
-    console.log(arr);
-}
-
 //dropdown open and close
 function dropDown(food){
     let dropIcon = document.querySelectorAll('span')
@@ -83,11 +66,12 @@ function dropDown(food){
         const e = dropIcon[i];
         e.addEventListener('click', () => {
             let dropContainer = e.parentElement.parentElement
+            let place = dropContainer.children[0].children[0].placeholder
             dropContainer.classList.toggle('disponible')
             if (dropContainer.classList.contains('disponible') == true) {
                 dropContainer.children[1].style.display = 'block'
                 // randomSelection(food, dropContainer.children[0].children[0].placeholder)         
-                sortSpecific(food)
+                sortSpecific(food, place)
             } else if (dropContainer.classList.contains('disponible') == false) {
                 dropContainer.children[1].style.display = 'none'                
             }
@@ -95,63 +79,54 @@ function dropDown(food){
     }
 }
 
-function sortSpecific(food) {
+//return the specific item in dropdown list
+function sortSpecific(food, place) {
     let relevant = document.querySelectorAll('article:not(.d-none)')
     let relevantId = Array.from(relevant, x => x.id)
     let lookingFor = relevantId.map((x) => { return food.find(element => element.id == x) })
-    console.log(lookingFor);
+    if (place == 'Ingredients') {
+        let ingrObj = Array.from(lookingFor, x => x.ingredients)
+        let ingrArr = ingrObj.map((x) => {return Array.from(x, y => y.ingredient)})
+        let allIngredient = ingrArr.flatMap(x => x)
+        return refreshDropDown([...new Set(allIngredient)], place)       
+    } else if (place == 'Appareils') {
+        let applianceArr = Array.from(lookingFor, x => x.appliance)
+        return refreshDropDown([...new Set(applianceArr)], place)
+    } else if (place == 'Utensiles') {
+        let utensilesArr = Array.from(lookingFor, x => x.ustensils)
+        let allUtensiles = utensilesArr.flatMap(x => x)
+        return refreshDropDown([...new Set(allUtensiles)], place)
+    }
 }
 
-// //take all the data in base of the user selection and store those in new set array
-// function randomSelection(foods, type) {
-//     let showIngredient = []
-//     let showAppareils = []
-//     let showUtensils = []
+//display the specific item in dropdown list
+function refreshDropDown(arr, place) {
+    let putHere = document.querySelector(`[placeholder=${place}]`).parentNode.parentNode.children[1]
+    putHere.innerHTML = ``
+    for (let i = 0; i < arr.length; i++) {
+        const e = arr[i];
+        putHere.innerHTML += `<li>${e}</li>`
+    }
+    addAndSearch(putHere, place)
+}
 
-//     foods.map((food) => {
-//         const {id,
-//              name, 
-//              time, 
-//              description, 
-//              ingredients, 
-//              appliance, 
-//              ustensils
-//             } = food
-//         let ingredient = ingredients.map((x) => {
-//             return x.ingredient
-//         })
-//         if (document.getElementsByClassName(id).length == 1) {
-//             for (let i = 0; i < ingredient.length; i++) {
-//                 const e = ingredient[i];
-//                 showIngredient.push(e)
-//             }
-//             showAppareils.push(appliance)
-//             for (let i = 0; i < ustensils.length; i++) {
-//                 const e = ustensils[i];
-//                 showUtensils.push(e)    
-//             }
-//         }
-//     })
-    
-//     if (type == 'Ingredients') {
-//         refreshDropDown([...new Set(showIngredient)], type)
-//         console.log([...new Set(showIngredient)]);
-//     } else if (type == 'Appareils') {
-//         refreshDropDown([...new Set(showAppareils)], type)
-//     } else if (type == 'Utensiles') {
-//         refreshDropDown([...new Set(showUtensils)], type)
-//     }
-// }
+//take the dropdown element clicked and copy to the top list for sort
+function addAndSearch(place, name) {
+    let listToListen = place.children
+    let background = place.parentElement.classList[1]
+    for (let i = 0; i < listToListen.length; i++) {
+        const e = listToListen[i];
+        e.addEventListener('click', (event) => {
+            if (listForSearch.innerText.includes(e.innerHTML) == false) {
+                listForSearch.innerHTML += `<li class="${background}">${e.innerHTML}<img src="./img/remove-icon.png"></img></li>`
+                // console.log(name, e.innerHTML);
+            }
+        })
+    }
+    menageFilter();
+}
 
-// function refreshDropDown(arr, place) {
-//     let putHere = document.querySelector(`[placeholder=${place}]`).parentNode.parentNode.children[1]
-//     putHere.innerHTML = ``
-//     for (let i = 0; i < arr.length; i++) {
-//         const e = arr[i];
-//         putHere.innerHTML += `<li>${e}</li>`
-//     }
-// }
-
+//all recepies must be visible
 function resetRecepies() {
     for (let index = 0; index < document.getElementsByClassName('post').length; index++) {
         const element = document.getElementsByClassName('post')[index];
@@ -161,6 +136,7 @@ function resetRecepies() {
     } 
 }
 
+//search based on user input
 function search (e) {
     for (let i = 0; i < input.length; i++) {
         const el = input[i];
@@ -175,11 +151,8 @@ function search (e) {
                         return food                                   
                 }                    
             })
-            console.clear()
             resetRecepies()
-            let showThis = recepiesMapping.filter((x) => {
-                return x !== undefined
-            }) 
+            let showThis = recepiesMapping.filter((x) => { return x !== undefined }) 
             for (let i = 0; i < showThis.length; i++) {
                 const ele = showThis[i];
                 let recepiesDisplaied = document.getElementById(ele.id);
