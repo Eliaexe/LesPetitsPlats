@@ -118,25 +118,30 @@ function refreshDropDown(arr, place, food) {
 function addAndSearch(place, food) {
     let listToListen = place.children
     let background = place.parentElement.classList[1]
+    let existingTags = listForSearch.children
     for (let i = 0; i < listToListen.length; i++) {
         const e = listToListen[i];
         e.addEventListener('click', (event) => {
             if (listForSearch.innerText.includes(e.innerHTML) == false) {
                 listForSearch.innerHTML += `<li class="${background}">${e.innerHTML}<img src="./img/remove-icon.png"></img></li>`
-                menageFilter();
-                searchWhitTags(food, background, e.innerHTML);
+                menageFilter(food);
+                
                 // console.log(name, e.innerHTML);
             }
         })
     }
 }
 // remove tag if click on x img
-function menageFilter() {
+function menageFilter(data) {
     let tags = listForSearch.childNodes
     for (let i = 0; i < tags.length; i++) {
         const e = tags[i].childNodes[1];
+        const bkg = e.parentNode.classList.value
+        const elem = e.parentNode.innerText
+        searchWhitTags(data, bkg, elem, 1); 
         e.addEventListener('click', () =>{
             e.parentElement.remove()
+            searchWhitTags(data, bkg, elem, -1); 
         })
     }
 }
@@ -151,21 +156,32 @@ function resetRecepies() {
     } 
 }
 
-function searchWhitTags(food, background, element) {
+//log the recepies we need to show
+function searchWhitTags(food, background, element, action) {
     let value = relevantRecepies(food)
+    let previusData;
     // console.log(background);
     let mapping = value.map((food) => {
         const {id, name, time, description, ingredients, appliance, ustensils} = food 
-        if (background == 'blue--bg' && ingredients.find(o => o.ingredient.toLowerCase().includes(element.toLowerCase()))) {
-            return food
-        } else if (background == 'green--bg' && appliance.toLowerCase() == element.toLowerCase()){
-            return food 
-        } else if (background == 'red--bg' && ustensils.includes(element)){
-            return food 
+        if (background == 'blue--bg' && !ingredients.find(o => o.ingredient.toLowerCase().includes(element.toLowerCase()))) {
+            return food.id
+        } else if (background == 'green--bg' && !(appliance.toLowerCase() == element.toLowerCase())){
+            return food.id 
+        } else if (background == 'red--bg' && !ustensils.includes(element)){
+            return food.id 
         }
     })
     let data = mapping.filter(Boolean)
-    console.log(data);
+    
+    // console.log(data);
+    previusData = data;
+    if (action == -1) {
+        // console.log(data, 'to remove');
+        console.log(previusData, 'to remove');
+    } else if (action == 1){
+        console.log(data, 'to show');
+        //displayResoult(data)
+    }
 }
 
 //search based on user input
@@ -184,14 +200,20 @@ function search (e) {
                 }                    
             })
             resetRecepies()
-            let showThis = recepiesMapping.filter((x) => { return x !== undefined }) 
-            for (let i = 0; i < showThis.length; i++) {
-                const ele = showThis[i];
-                let recepiesDisplaied = document.getElementById(ele.id);
-                if (ele.id != undefined && recepiesDisplaied != null) {
-                    recepiesDisplaied.classList.add('d-none')                
-                }
-            }            
+            displayResoult(recepiesMapping)
         })
     }
+}
+
+//display the sorted recepies
+function displayResoult(recepiesMapping) {
+    let showThis = recepiesMapping.filter((x) => { return x !== undefined }) 
+    // console.log(showThis);
+    for (let i = 0; i < showThis.length; i++) {
+        const ele = showThis[i];
+        let recepiesDisplaied = document.getElementById(ele.id);
+        if (ele.id != undefined && recepiesDisplaied != null) {
+            recepiesDisplaied.classList.add('d-none')                
+        }
+    }  
 }
