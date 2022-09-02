@@ -118,7 +118,6 @@ function refreshDropDown(arr, place, food) {
 function addAndSearch(place, food) {
     let listToListen = place.children
     let background = place.parentElement.classList[1]
-    let existingTags = listForSearch.children
     for (let i = 0; i < listToListen.length; i++) {
         const e = listToListen[i];
         e.addEventListener('click', (event) => {
@@ -131,17 +130,30 @@ function addAndSearch(place, food) {
         })
     }
 }
+
+//find the dropdown name
+function findTheDrop(background) {
+    for (let i = 0; i < input.length; i++) {
+        const e = input[i];
+        if (e.classList.contains(background)) {
+            return e.placeholder
+        }
+    }
+}
+
 // remove tag if click on x img
 function menageFilter(data) {
     let tags = listForSearch.childNodes
     for (let i = 0; i < tags.length; i++) {
         const e = tags[i].childNodes[1];
         const bkg = e.parentNode.classList.value
-        const elem = e.parentNode.innerText
-        searchWhitTags(data, bkg, elem, 1); 
+        let group = findTheDrop(bkg)
+        searchWhitTags(data, 'add'); 
+        sortSpecific(data, group)
         e.addEventListener('click', () =>{
+            searchWhitTags(data, 'remove'); 
+            sortSpecific(data, group)
             e.parentElement.remove()
-            searchWhitTags(data, bkg, elem, -1); 
         })
     }
 }
@@ -157,30 +169,36 @@ function resetRecepies() {
 }
 
 //log the recepies we need to show
-function searchWhitTags(food, background, element, action) {
-    let value = relevantRecepies(food)
-    let previusData;
-    // console.log(background);
-    let mapping = value.map((food) => {
-        const {id, name, time, description, ingredients, appliance, ustensils} = food 
-        if (background == 'blue--bg' && !ingredients.find(o => o.ingredient.toLowerCase().includes(element.toLowerCase()))) {
-            return food.id
-        } else if (background == 'green--bg' && !(appliance.toLowerCase() == element.toLowerCase())){
-            return food.id 
-        } else if (background == 'red--bg' && !ustensils.includes(element)){
-            return food.id 
+function searchWhitTags(foods, action) {
+    let existingTags = listForSearch.children
+    if (existingTags.length <= 0) {
+        return
+    } else {
+        // console.clear()
+        for (let i = 0; i < existingTags.length; i++) {
+            const e = existingTags[i];
+            let background = e.classList.value
+            let element = e.innerText
+            let mapping = foods.map((food) => {
+                const {id, name, time, description, ingredients, appliance, ustensils} = food 
+                if (document.getElementById(food.id).classList.contains('d-none') == false) {
+                    if (background == 'blue--bg' && !ingredients.find(o => o.ingredient.toLowerCase().includes(element.toLowerCase()))) {
+                        return food
+                    } else if (background == 'green--bg' && !(appliance.toLowerCase() == element.toLowerCase())){
+                        return food 
+                    } else if (background == 'red--bg' && !ustensils.includes(element)){
+                        return food 
+                    }
+                }
+            })
+            let data = mapping.filter(Boolean)
+            if (action == 'remove') { 
+                console.log(data, 'to remove'); //start from here
+            } else if (action == 'add'){
+                displayResoult(mapping)
+                console.log('sorted in add tag');
+            }
         }
-    })
-    let data = mapping.filter(Boolean)
-    
-    // console.log(data);
-    previusData = data;
-    if (action == -1) {
-        // console.log(data, 'to remove');
-        console.log(previusData, 'to remove');
-    } else if (action == 1){
-        console.log(data, 'to show');
-        //displayResoult(data)
     }
 }
 
