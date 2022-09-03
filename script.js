@@ -151,16 +151,19 @@ function menageFilter(data) {
         searchWhitTags(data, 'add'); 
         sortSpecific(data, group)
         e.addEventListener('click', () =>{
-            sortSpecific(data, group)
+            console.log('click');
+            if (tags.length == 1) {
+                resetRecepies()
+            }
             e.parentElement.remove()
             searchWhitTags(data, 'remove'); 
+            sortSpecific(data, group)
         })
     }
 }
 
 //all recepies must be visible
 function resetRecepies() {
-    
     for (let index = 0; index < document.getElementsByClassName('post').length; index++) {
         const element = document.getElementsByClassName('post')[index];
         if (element.classList.contains('d-none') == true) {
@@ -172,36 +175,31 @@ function resetRecepies() {
 //log the recepies we need to show
 function searchWhitTags(foods, action) {
     let existingTags = listForSearch.children
-    if (existingTags.length < 0) {
-        return
-    } else {
-        // console.clear()
-        for (let i = 0; i < existingTags.length; i++) {
-            const e = existingTags[i];
-            console.log(e);
-            let background = e.classList.value
-            let element = e.innerText
-            let mapping = foods.map((food) => {
-                const {id, name, time, description, ingredients, appliance, ustensils} = food 
-                if (document.getElementById(food.id).classList.contains('d-none') == false) {
-                    if (background == 'blue--bg' && !ingredients.find(o => o.ingredient.toLowerCase().includes(element.toLowerCase()))) {
-                        return food
-                    } else if (background == 'green--bg' && !(appliance.toLowerCase() == element.toLowerCase())){
-                        return food 
-                    } else if (background == 'red--bg' && !ustensils.includes(element)){
-                        return food 
-                    }
+    // console.clear()
+    for (let i = 0; i < existingTags.length; i++) {
+        const e = existingTags[i];
+        let background = e.classList.value
+        let element = e.innerText
+        let mapping = foods.map((food) => {
+            const {id, name, time, description, ingredients, appliance, ustensils} = food 
+            if (document.getElementById(food.id).classList.contains('d-none') == false) {
+                if (background == 'blue--bg' && !ingredients.find(o => o.ingredient.toLowerCase().includes(element.toLowerCase()))) {
+                    return food
+                } else if (background == 'green--bg' && !(appliance.toLowerCase() == element.toLowerCase())){
+                    return food 
+                } else if (background == 'red--bg' && !ustensils.includes(element)){
+                    return food 
                 }
-            })
-            let data = mapping.filter(Boolean)
-            if (action == 'remove') { 
-                console.clear()
-                resetRecepies()
-                console.log(provas());//start from here
-                searchWhitTags(foods, 'add')
-            } else if (action == 'add'){
-                displayResoult(mapping)
             }
+        })
+        let data = mapping.filter(Boolean)
+        if (action == 'remove') { 
+            console.clear()
+            resetRecepies()
+            console.log(provas(), 'remove');//start from here
+            searchWhitTags(foods, 'add')
+        } else if (action == 'add'){
+            displayResoult(mapping)
         }
     }
 }
