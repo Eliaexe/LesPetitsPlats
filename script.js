@@ -151,15 +151,16 @@ function menageFilter(data) {
         searchWhitTags(data, 'add'); 
         sortSpecific(data, group)
         e.addEventListener('click', () =>{
-            searchWhitTags(data, 'remove'); 
             sortSpecific(data, group)
             e.parentElement.remove()
+            searchWhitTags(data, 'remove'); 
         })
     }
 }
 
 //all recepies must be visible
 function resetRecepies() {
+    
     for (let index = 0; index < document.getElementsByClassName('post').length; index++) {
         const element = document.getElementsByClassName('post')[index];
         if (element.classList.contains('d-none') == true) {
@@ -171,12 +172,13 @@ function resetRecepies() {
 //log the recepies we need to show
 function searchWhitTags(foods, action) {
     let existingTags = listForSearch.children
-    if (existingTags.length <= 0) {
+    if (existingTags.length < 0) {
         return
     } else {
         // console.clear()
         for (let i = 0; i < existingTags.length; i++) {
             const e = existingTags[i];
+            console.log(e);
             let background = e.classList.value
             let element = e.innerText
             let mapping = foods.map((food) => {
@@ -193,13 +195,19 @@ function searchWhitTags(foods, action) {
             })
             let data = mapping.filter(Boolean)
             if (action == 'remove') { 
-                console.log(data, 'to remove'); //start from here
+                console.clear()
+                resetRecepies()
+                console.log(provas());//start from here
+                searchWhitTags(foods, 'add')
             } else if (action == 'add'){
                 displayResoult(mapping)
-                console.log('sorted in add tag');
             }
         }
     }
+}
+
+function provas() {
+    return listForSearch.children
 }
 
 //search based on user input
