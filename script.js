@@ -66,14 +66,24 @@ function dropDown(food){
         e.addEventListener('click', () => {
             let dropContainer = e.parentElement.parentElement
             let place = dropContainer.children[0].children[0].placeholder
+            sortSpecific(food, place)
             dropContainer.classList.toggle('disponible')
             if (dropContainer.classList.contains('disponible') == true) {
                 dropContainer.children[1].style.display = 'block'
                 // randomSelection(food, dropContainer.children[0].children[0].placeholder)         
-                sortSpecific(food, place)
             } else if (dropContainer.classList.contains('disponible') == false) {
                 dropContainer.children[1].style.display = 'none'                
             }
+        })
+        
+        let writeDrop = e.previousElementSibling
+        writeDrop.addEventListener('input', (event) => {
+            let userSearch = event.target.value.toLowerCase().trim()
+            let dropResoult = writeDrop.parentNode.parentNode.lastElementChild
+            let icon = writeDrop.parentNode.lastElementChild;
+            icon.click()
+            icon.click()
+            console.log(Array.from(dropResoult.childNodes, x => x.innerText)); // continua da qui
         })
     }
 }
@@ -87,7 +97,7 @@ function relevantRecepies(food) {
 
 //return the specific item in dropdown list
 function sortSpecific(food, place) {
-    let iFindThis = relevantRecepies(food)
+    let iFindThis = relevantRecepies(food).filter(Boolean)
     if (place == 'Ingredients') {
         let ingrObj = Array.from(iFindThis, x => x.ingredients)
         let ingrArr = ingrObj.map((x) => {return Array.from(x, y => y.ingredient)})
@@ -124,8 +134,6 @@ function addAndSearch(place, food) {
             if (listForSearch.innerText.includes(e.innerHTML) == false) {
                 listForSearch.innerHTML += `<li class="${background}">${e.innerHTML}<img src="./img/remove-icon.png"></img></li>`
                 menageFilter(food);
-                
-                // console.log(name, e.innerHTML);
             }
         })
     }
@@ -151,9 +159,8 @@ function menageFilter(data) {
         searchWhitTags(data, 'add'); 
         sortSpecific(data, group)
         e.addEventListener('click', () =>{
-            console.log('click');
             if (tags.length == 1) {
-                resetRecepies()
+                resetRecepies(data)
             }
             e.parentElement.remove()
             searchWhitTags(data, 'remove'); 
@@ -163,19 +170,24 @@ function menageFilter(data) {
 }
 
 //all recepies must be visible
-function resetRecepies() {
+function resetRecepies(food) {
     for (let index = 0; index < document.getElementsByClassName('post').length; index++) {
         const element = document.getElementsByClassName('post')[index];
         if (element.classList.contains('d-none') == true) {
             element.classList.remove('d-none')
         }
     } 
+    data = food.filter(Boolean)
+    let xxx = document.getElementsByClassName('filter--search')
+    for (let i = 0; i < xxx.length; i++) {
+        const element = xxx[i].placeholder;
+        sortSpecific(data, element)
+    }
 }
 
 //log the recepies we need to show
 function searchWhitTags(foods, action) {
     let existingTags = listForSearch.children
-    // console.clear()
     for (let i = 0; i < existingTags.length; i++) {
         const e = existingTags[i];
         let background = e.classList.value
@@ -195,17 +207,12 @@ function searchWhitTags(foods, action) {
         let data = mapping.filter(Boolean)
         if (action == 'remove') { 
             console.clear()
-            resetRecepies()
-            console.log(provas(), 'remove');//start from here
+            resetRecepies(data)
             searchWhitTags(foods, 'add')
         } else if (action == 'add'){
             displayResoult(mapping)
         }
     }
-}
-
-function provas() {
-    return listForSearch.children
 }
 
 //search based on user input
@@ -223,8 +230,11 @@ function search (e) {
                         return food                                   
                 }                    
             })
-            resetRecepies()
+            resetRecepies(recepiesMapping)
             displayResoult(recepiesMapping)
+            // if (el.placeholder == 'Ingredients') {
+            //     console.log(searchString, el.parentNode.parentNode.lastElementChild);
+            // }
         })
     }
 }
@@ -232,7 +242,6 @@ function search (e) {
 //display the sorted recepies
 function displayResoult(recepiesMapping) {
     let showThis = recepiesMapping.filter((x) => { return x !== undefined }) 
-    // console.log(showThis);
     for (let i = 0; i < showThis.length; i++) {
         const ele = showThis[i];
         let recepiesDisplaied = document.getElementById(ele.id);
