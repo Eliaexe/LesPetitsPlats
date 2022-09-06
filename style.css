@@ -434,7 +434,6 @@ main{
 .un-list{
     display: flex;
     flex-wrap: wrap;
-
 }
 
 .un-list li {
@@ -450,6 +449,18 @@ main{
     list-style: none;
 }
 
+.wrt{
+    height: 6rem;
+}
+
+.written-resoult {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 3px;
+    font-size: 16px;
+}
 
 #specificSelected {
     display: block;

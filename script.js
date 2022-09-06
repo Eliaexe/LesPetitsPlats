@@ -63,6 +63,7 @@ function dropDown(food){
     let dropIcon = document.querySelectorAll('span')
     for (let i = 0; i < dropIcon.length; i++) {
         const e = dropIcon[i];
+        let displayRes = e.parentElement.parentElement.childNodes[5]
         e.addEventListener('click', () => {
             let dropContainer = e.parentElement.parentElement
             let place = dropContainer.children[0].children[0].placeholder
@@ -70,6 +71,10 @@ function dropDown(food){
             dropContainer.classList.toggle('disponible')
             if (dropContainer.classList.contains('disponible') == true) {
                 dropContainer.children[1].style.display = 'block'
+                if (dropContainer.classList.contains('wrt') == true) {
+                    dropContainer.classList.remove('wrt')
+                    displayRes.style.display = 'none'
+                }
                 // randomSelection(food, dropContainer.children[0].children[0].placeholder)         
             } else if (dropContainer.classList.contains('disponible') == false) {
                 dropContainer.children[1].style.display = 'none'                
@@ -79,11 +84,20 @@ function dropDown(food){
         let writeDrop = e.previousElementSibling
         writeDrop.addEventListener('input', (event) => {
             let userSearch = event.target.value.toLowerCase().trim()
-            let dropResoult = writeDrop.parentNode.parentNode.lastElementChild
+            let dropResoult = writeDrop.parentNode.parentNode.childNodes[3]
             let icon = writeDrop.parentNode.lastElementChild;
             icon.click()
             icon.click()
-            console.log(Array.from(dropResoult.childNodes, x => x.innerText)); // continua da qui
+            let allSpecific = Array.from(dropResoult.childNodes, x => x.innerText.toLowerCase())
+            let container = e.parentElement.parentElement
+            
+            container.classList.add('wrt')
+            displayRes.style.display = 'block'
+            displayRes.innerHTML = `${allSpecific.find(o => o.toLowerCase().includes(userSearch))}`
+            if (userSearch.length == 0) {
+                container.classList.remove('wrt')
+                displayRes.style.display = 'none'
+            }
         })
     }
 }
@@ -177,6 +191,10 @@ function resetRecepies(food) {
             element.classList.remove('d-none')
         }
     } 
+    dropDownRefresced(food)
+}
+
+function dropDownRefresced(food) {
     data = food.filter(Boolean)
     let xxx = document.getElementsByClassName('filter--search')
     for (let i = 0; i < xxx.length; i++) {
