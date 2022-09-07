@@ -298,7 +298,6 @@ main{
 }
 
 .written-resoult {
-    height: 50%;
     width: 100%;
     display: flex;
     align-items: center;
@@ -339,4 +338,8 @@ main{
 
 .rotate {
     transform: rotateY(180deg);
+}
+
+.d-none {
+    display: none;
 }

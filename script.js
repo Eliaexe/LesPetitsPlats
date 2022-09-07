@@ -185,10 +185,11 @@ function menageFilter(data) {
 
 //all recepies must be visible
 function resetRecepies(food) {
-    for (let index = 0; index < document.getElementsByClassName('post').length; index++) {
-        const element = document.getElementsByClassName('post')[index];
-        if (element.classList.contains('d-none') == true) {
-            element.classList.remove('d-none')
+    let posts = document.getElementsByClassName('post')
+    for (let i = 0; i < posts.length; i++) {
+        const e = posts[i];
+        if (e.classList.contains('d-none') == true) {
+            e.classList.remove('d-none')
         }
     } 
     dropDownRefresced(food)
@@ -196,9 +197,9 @@ function resetRecepies(food) {
 
 function dropDownRefresced(food) {
     data = food.filter(Boolean)
-    let xxx = document.getElementsByClassName('filter--search')
-    for (let i = 0; i < xxx.length; i++) {
-        const element = xxx[i].placeholder;
+    let filterInput = document.getElementsByClassName('filter--search')
+    for (let i = 0; i < filterInput.length; i++) {
+        const element = filterInput[i].placeholder;
         sortSpecific(data, element)
     }
 }
@@ -260,6 +261,7 @@ function search (e) {
 //display the sorted recepies
 function displayResoult(recepiesMapping) {
     let showThis = recepiesMapping.filter((x) => { return x !== undefined }) 
+    let message = document.getElementsByClassName('not-found')[0]
     for (let i = 0; i < showThis.length; i++) {
         const ele = showThis[i];
         let recepiesDisplaied = document.getElementById(ele.id);
@@ -267,4 +269,9 @@ function displayResoult(recepiesMapping) {
             recepiesDisplaied.classList.add('d-none')                
         }
     }  
+    if (showThis.length == 50) {
+        message.style.display = "block"
+    } else if (showThis.length < 50){
+        message.style.display = "none"
+    }
 }
