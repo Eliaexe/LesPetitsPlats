@@ -252,17 +252,6 @@ function search (data) {
                 recepiesMapping.push(e)
             }
         }
-        
-
-
-        // let recepiesMapping = data.map((food) => {
-        //     const {id, name, time, description, ingredients, appliance, ustensils} = food 
-        //     if (!(name.toLowerCase().includes(searchString) ||
-        //         description.toLowerCase().includes(searchString) ||
-        //         ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
-        //             return food                                   
-        //     }                    
-        // })
         resetRecepies(recepiesMapping)
         displayResoult(recepiesMapping)
     })
