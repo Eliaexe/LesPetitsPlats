@@ -235,27 +235,21 @@ function searchWhitTags(foods, action) {
 }
 
 //search based on user input
-function search (e) {
-    for (let i = 0; i < input.length; i++) {
-        const el = input[i];
-        el.addEventListener('input', (event) => { 
-            let searchString = event.target.value.toLowerCase().trim()
-            let recepiesMapping = e.map((food) => {
-                const {id, name, time, description, ingredients, appliance, ustensils} = food 
-                if (el.placeholder == 'Rechercher un ingredient, une recette, etc...' && !(
-                    name.toLowerCase().includes(searchString) ||
-                    description.toLowerCase().includes(searchString) ||
-                    ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
-                        return food                                   
-                }                    
-            })
-            resetRecepies(recepiesMapping)
-            displayResoult(recepiesMapping)
-            // if (el.placeholder == 'Ingredients') {
-            //     console.log(searchString, el.parentNode.parentNode.lastElementChild);
-            // }
+function search (data) {
+    let mainSearchBar = document.querySelector('.placeholder--dark-grey')
+    mainSearchBar.addEventListener('input', (event) => { 
+        let searchString = event.target.value.toLowerCase().trim()
+        let recepiesMapping = data.map((food) => {
+            const {id, name, time, description, ingredients, appliance, ustensils} = food 
+            if (!(name.toLowerCase().includes(searchString) ||
+                description.toLowerCase().includes(searchString) ||
+                ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
+                    return food                                   
+            }                    
         })
-    }
+        resetRecepies(recepiesMapping)
+        displayResoult(recepiesMapping)
+    })
 }
 
 //display the sorted recepies
