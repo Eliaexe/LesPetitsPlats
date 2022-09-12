@@ -238,15 +238,31 @@ function searchWhitTags(foods, action) {
 function search (data) {
     let mainSearchBar = document.querySelector('.placeholder--dark-grey')
     mainSearchBar.addEventListener('input', (event) => { 
+        console.clear()
         let searchString = event.target.value.toLowerCase().trim()
-        let recepiesMapping = data.map((food) => {
-            const {id, name, time, description, ingredients, appliance, ustensils} = food 
-            if (!(name.toLowerCase().includes(searchString) ||
-                description.toLowerCase().includes(searchString) ||
-                ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
-                    return food                                   
-            }                    
-        })
+        let recepiesMapping = []
+        for (let i = 0; i < data.length; i++) {
+            const e = data[i];
+            let ingr = []
+            for (let i = 0; i < e.ingredients.length; i++) {
+                const el = e.ingredients[i].ingredient;
+                ingr.push(el.toLowerCase())
+            }
+            if (!e.name.toLowerCase().includes(searchString)  && !e.description.toLowerCase().includes(searchString) && !ingr.includes(searchString)) {
+                recepiesMapping.push(e)
+            }
+        }
+        
+
+
+        // let recepiesMapping = data.map((food) => {
+        //     const {id, name, time, description, ingredients, appliance, ustensils} = food 
+        //     if (!(name.toLowerCase().includes(searchString) ||
+        //         description.toLowerCase().includes(searchString) ||
+        //         ingredients.find(o => o.ingredient.toLowerCase().includes(searchString)))){
+        //             return food                                   
+        //     }                    
+        // })
         resetRecepies(recepiesMapping)
         displayResoult(recepiesMapping)
     })
