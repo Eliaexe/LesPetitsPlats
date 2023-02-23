@@ -48,7 +48,7 @@ main{
 .post{
     display: inline-block;
     height: 364px;
-    width: 380px;
+    width: 390px;
     border-radius: 5px;
     background-color: #E7E7E7;
     margin-bottom: 50px;
@@ -56,7 +56,7 @@ main{
 
 .top_post{
     height: 178px;
-    width: 380px;
+    width: 100%;
     background: #C7BEBE;
     border-radius: 5px 5px 0px 0px;
 }
@@ -291,6 +291,7 @@ main{
     text-align: left;
     padding-top: 5px;
     list-style: none;
+    cursor: pointer;
 }
 
 .wrt{
@@ -332,7 +333,10 @@ main{
 }
 
 .top-bar{
-    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 5px 0px 2px;
     width: 100%;
 }
 
