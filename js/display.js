@@ -1,4 +1,4 @@
-//get all the single recepies
+//get all the single recepies and display
 function showRecipes(e){
     for (let i = 0; i < e.length; i++) {
         const el = e[i];
@@ -7,7 +7,7 @@ function showRecipes(e){
     removeUndefined()
 }
 
-//display all the card disponible
+//display the UI of the card
 function displayCard(obj) {
     let cardContainer = document.getElementById('cardContainer');
     let card = `
@@ -50,32 +50,16 @@ function removeUndefined() {
     });
 }
 
-//all recepies must be visible
-function resetRecepies(food) {
-    let posts = document.getElementsByClassName('post')
-    for (let i = 0; i < posts.length; i++) {
-        const e = posts[i];
-        if (e.classList.contains('d-none') == true) {
-            e.classList.remove('d-none')
+function changeDisplay(data) {
+    let showThis = data.filter(Boolean)
+    let idToDisplay = showThis.map(x => x.id)
+    let recepies = document.querySelectorAll('.post')
+    recepies.forEach(e => {
+        if (idToDisplay.includes(Number(e.id)) == false) {
+            document.getElementById(e.id).classList.add('d-none')
+        } else if (idToDisplay.includes(Number(e.id)) == true || 
+                   document.getElementById(e.id).classList.contains('d-none')) {
+            document.getElementById(e.id).classList.remove('d-none')
         }
-    } 
-    dropDownRefresced(food)
-}
-
-//display the sorted recepies
-function displayResoult(recepiesMapping) {
-    let showThis = recepiesMapping.filter((x) => { return x !== undefined }) 
-    let message = document.getElementsByClassName('not-found')[0]
-    for (let i = 0; i < showThis.length; i++) {
-        const ele = showThis[i];
-        let recepiesDisplaied = document.getElementById(ele.id);
-        if (ele.id != undefined && recepiesDisplaied != null) {
-            recepiesDisplaied.classList.add('d-none')                
-        }
-    }  
-    if (showThis.length == 50) {
-        message.style.display = "block"
-    } else if (showThis.length < 50){
-        message.style.display = "none"
-    }
+    });
 }

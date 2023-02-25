@@ -60,7 +60,7 @@ function refreshDropDown(arr, place, food) {
         const e = arr[i];
         putHere.innerHTML += `<li class="dropDownClickable">${e}</li>`
     }
-    addAndSearch(putHere, food)
+    addAndSearch(putHere, food, place)
 }
 
 //find the dropdown name
@@ -84,7 +84,7 @@ function dropDownRefresced(food) {
 }
 
 //take the dropdown element clicked and copy to the top list for sort
-function addAndSearch(place, food) {
+function addAndSearch(place, food, type) {
     let listToListen = document.querySelectorAll('.dropDownClickable')
     let background = place.parentElement.classList[1]
     let listForSearch = document.getElementById('specificSelected')
@@ -92,7 +92,7 @@ function addAndSearch(place, food) {
         const e = listToListen[i];
         e.addEventListener('click', (event) => {
             if (listForSearch.innerText.includes(e.innerHTML) == false) {
-                listForSearch.innerHTML += `<li class="${background}">${e.innerHTML}<img src="./img/remove-icon.png"></img></li>`
+                listForSearch.innerHTML += `<li class="${background}" data-type="${type}">${e.innerHTML}<img src="./img/remove-icon.png"></img></li>`
                 menageFilter(food);
             }
         })

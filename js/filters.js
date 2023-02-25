@@ -9,10 +9,9 @@ function menageFilter(data) {
         searchWhitTags(data, 'add'); 
         sortSpecific(data, group)
         e.addEventListener('click', () =>{
-            if (tags.length == 1) {
-                resetRecepies(data)
-            }
             e.parentElement.remove()
+            let bigS = bigSearch(data, document.getElementById('big-search').value)
+            changeDisplay(bigS)
             searchWhitTags(data, 'remove'); 
             sortSpecific(data, group)
         })
