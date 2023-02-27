@@ -310,8 +310,8 @@ main{
 }
 
 .scrollBar{
-    scrollbar-width: 5px;
-    scrollbar-color: #fff rgba(256, 256, 256, 0);
+    scrollbar-width: 2wv;
+    scrollbar-color: #fff rgba(255, 255, 255, 0);
 }
 
 .scrollBar::-webkit-scrollbar {
