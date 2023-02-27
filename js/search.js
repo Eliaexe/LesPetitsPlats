@@ -1,13 +1,13 @@
 //eventListener for big search
-function search (data) {
+function search(data) {
     document.getElementById('big-search').addEventListener('input', (event) => { 
         let processedData = processingData(data)
         let searchString = event.target.value.toLowerCase().trim()      
         let recepiesMapping = bigSearch(processedData, searchString)
-        if (searchString.length >= 3) {
+        if (searchString.length > 3) {
             changeDisplay(recepiesMapping)
-        } else if (searchString.length <= 3) {
-            changeDisplay(recepiesMapping)
+        } else if (searchString.length = 3) {
+            changeDisplay(processedData)
         }
     })
 }
@@ -33,7 +33,6 @@ function processingData(data) {
     if (tagsCounter > 0) { 
         let type = tags.lastChild.getAttribute('data-type')
         let ofWhat = tags.lastChild.innerText
-        console.log(type, ofWhat);
         return findRecepiesFromSpecs(data, type, ofWhat) 
     } 
     else if (tagsCounter <= 0){ return data }
@@ -45,7 +44,7 @@ function findRecepiesFromSpecs(data, from, search) {
         const {ingredients, appliance, ustensils} = rece 
         if (from == 'Ingredients' && ingredients.find(o => o.ingredient.toLowerCase().includes(search.toLowerCase()))) {
             return rece
-        }  else if (from.toLowerCase() == 'appareils' && appliance == search.toLowerCase()){
+        }  else if (from.toLowerCase() == 'appareils' && appliance.toLowerCase() == search.toLowerCase()){
             return rece
         } else if (from.toLowerCase() == 'utensiles' && ustensils.includes(search.toLowerCase())){
             return rece
@@ -82,10 +81,12 @@ function searchWhitTags(foods, action) {
         })
         let data = mapping.filter(Boolean)
         if (action == 'remove') { 
+            search(data)
             changeDisplay(data)
             searchWhitTags(foods, 'add')
         } else if (action == 'add'){
             changeDisplay(data)
+            search(data)
         }
     }
 }

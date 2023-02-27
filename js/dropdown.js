@@ -7,7 +7,12 @@ function dropDown(food){
         e.addEventListener('click', () => {
             let dropContainer = e.parentElement.parentElement
             let place = dropContainer.children[0].children[0].placeholder
+            let dropOpen = document.querySelectorAll('.disponible')[0]
             sortSpecific(food, place)
+            if (dropOpen != undefined && dropContainer !== dropOpen) {
+                dropOpen.children[1].style.display = 'none'
+                dropOpen.classList.remove('disponible')
+            }
             dropContainer.classList.toggle('disponible')
             if (dropContainer.classList.contains('disponible') == true) {
                 dropContainer.children[1].style.display = 'block'
@@ -32,19 +37,22 @@ function dropDown(food){
             let allSpecific = Array.from(dropResoult.childNodes, x => x.innerText.toLowerCase())
             let container = e.parentElement.parentElement
             let detailDisplayer = writeDrop.parentNode.parentNode
+
             container.classList.add('wrt')
             displayRes.style.display = 'block'
             displayRes.classList.add('dropDownClickable')
             let singleFind = allSpecific.find(o => o.toLowerCase().includes(userSearch))
+            
             if (singleFind != undefined) {
                 displayRes.innerHTML = `${singleFind}`
             }
-
+            
+        
             if (userSearch.length == 0 || container.classList.contains('disponible')) {
                 container.classList.remove('wrt')
                 displayRes.style.display = 'none'
             }
-
+            
             if (detailDisplayer.classList.contains('disponible')) {
                 refreshDropDown(allSpecific.filter(e => e.includes(userSearch)), place, food)
             }
@@ -74,27 +82,18 @@ function findTheDrop(background) {
     }
 }
 
-function dropDownRefresced(food) {
-    data = food.filter(Boolean)
-    let filterInput = document.getElementsByClassName('filter--search')
-    for (let i = 0; i < filterInput.length; i++) {
-        const element = filterInput[i].placeholder;
-        sortSpecific(data, element)
-    }
-}
-
 //take the dropdown element clicked and copy to the top list for sort
 function addAndSearch(place, food, type) {
     let listToListen = document.querySelectorAll('.dropDownClickable')
     let background = place.parentElement.classList[1]
     let listForSearch = document.getElementById('specificSelected')
-    for (let i = 0; i < listToListen.length; i++) {
-        const e = listToListen[i];
+    
+    listToListen.forEach(e => {
         e.addEventListener('click', (event) => {
             if (listForSearch.innerText.includes(e.innerHTML) == false) {
                 listForSearch.innerHTML += `<li class="${background}" data-type="${type}">${e.innerHTML}<img src="./img/remove-icon.png"></img></li>`
                 menageFilter(food);
             }
         })
-    }
+    });
 }

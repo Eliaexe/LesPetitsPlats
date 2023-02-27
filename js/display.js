@@ -25,7 +25,7 @@ function displayCard(obj) {
                 <ul class="ul_post" >
                 <div class="prova"></div>
                 </ul>
-                <p class="description">${obj.description}</p>
+                <p class="description scrollBar">${obj.description}</p>
             </div>
         </div>
     </article>
@@ -61,5 +61,9 @@ function changeDisplay(data) {
                    document.getElementById(e.id).classList.contains('d-none')) {
             document.getElementById(e.id).classList.remove('d-none')
         }
+    });
+    let type = ['Ingredients' , 'Appareils', 'Utensiles']
+    type.forEach(e => {
+        sortSpecific(data.filter(Boolean), e)
     });
 }

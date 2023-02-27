@@ -238,7 +238,7 @@ main{
     margin: 5px 10px 0 0;
     border-radius: 5px;
     font-size: 16px;
-    color: white;
+    color: #ffff;
 }
 
 
@@ -255,7 +255,7 @@ main{
 
 .disponible{
     width: 667px;
-    height: 397px;
+    height: 405px;
     border-radius: 5px;
 }
 
@@ -278,10 +278,16 @@ main{
 .un-list{
     display: flex;
     flex-wrap: wrap;
+    overflow-y: scroll;
+    margin: 0;
+    height: 350px;
 }
 
 .un-list li {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
     width: 200px;
     font-family: Lato;
     font-size: 18px;
@@ -289,14 +295,34 @@ main{
     line-height: 22px;
     letter-spacing: 0em;
     text-align: left;
-    padding-top: 5px;
+    padding: 3px 0px;
     list-style: none;
     cursor: pointer;
+}
+
+.un-list li:hover {
+    border: 2px solid #ffff;
+    border-radius: 5px;
 }
 
 .wrt{
     height: 6rem;
 }
+
+.scrollBar{
+    scrollbar-width: 5px;
+    scrollbar-color: #fff rgba(256, 256, 256, 0);
+}
+
+.scrollBar::-webkit-scrollbar {
+    width: 5px;
+}
+.scrollBar::-webkit-scrollbar-thumb {
+    background-color: #fff;
+}.scrollBar::-webkit-scrollbar-track {
+    background-color: rgba(256, 256, 256, 0);
+}
+
 
 .written-resoult {
     width: 100%;
@@ -323,7 +349,7 @@ main{
     margin-top: 5px;
     
     list-style: none;
-    color: white;
+    color: #ffff;
 }
 
 #specificSelected li img {
