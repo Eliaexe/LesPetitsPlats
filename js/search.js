@@ -12,18 +12,24 @@ function search(data) {
     })
 }
 
-//actual algo for sorting stuff
+//actual algo for sorting stuff BUT WHIT LOOPS
 function bigSearch(data, str) {
     let processedData = processingData(data)
-    let recepiesMapping = processedData.filter(Boolean).map((food) => {
-        const {id, name, time, description, ingredients, appliance, ustensils} = food 
+   
+    let printThis = []
+
+    for (const recepie of processedData) {
+        const {id, name, time, description, ingredients, appliance, ustensils} = recepie
         if ((name.toLowerCase().includes(str) ||
             description.toLowerCase().includes(str) ||
             ingredients.find(o => o.ingredient.toLowerCase().includes(str)))){
-                return food                                   
-        }                    
-    })
-    return recepiesMapping
+                if (recepie != undefined) {
+                    printThis.push({...recepie})
+                }                                  
+        }
+    }
+
+    return printThis
 }
 
 //prepare data whit the tags sorting
