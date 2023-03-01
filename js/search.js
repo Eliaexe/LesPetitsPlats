@@ -4,9 +4,9 @@ function search(data) {
         let processedData = processingData(data)
         let searchString = event.target.value.toLowerCase().trim()      
         let recepiesMapping = bigSearch(processedData, searchString)
-        if (searchString.length > 3) {
+        if (searchString.length >= 3) {
             changeDisplay(recepiesMapping)
-        } else if (searchString.length = 3) {
+        } else if (searchString.length < 3) {
             changeDisplay(processedData)
         }
     })
