@@ -14,43 +14,44 @@ function search(data) {
 
 //actual algo for sorting stuff
 function bigSearch(data, str) {
-    let processedData = processingData(data)
-    let recepiesMapping = processedData.filter(Boolean).map((food) => {
-        const {id, name, time, description, ingredients, appliance, ustensils} = food 
-        if ((name.toLowerCase().includes(str) ||
-            description.toLowerCase().includes(str) ||
-            ingredients.find(o => o.ingredient.toLowerCase().includes(str)))){
-                return food                                   
-        }                    
-    })
-    return recepiesMapping
+    const recepiesMapping = processingData(data).filter(food => {
+      const { name, description, ingredients } = food;
+      return name.toLowerCase().includes(str) ||
+             description.toLowerCase().includes(str) ||
+             ingredients.some(o => o.ingredient.toLowerCase().includes(str));
+    });
+    return recepiesMapping;
 }
-
+  
 //prepare data whit the tags sorting
 function processingData(data) {
-    let tags = document.getElementById('specificSelected')
-    let tagsCounter = document.getElementById('specificSelected').children.length
+    const tags = document.getElementById('specificSelected');
+    const tagsCounter = tags.children.length;
     if (tagsCounter > 0) { 
-        let type = tags.lastChild.getAttribute('data-type')
-        let ofWhat = tags.lastChild.innerText
-        return findRecepiesFromSpecs(data, type, ofWhat) 
+      const type = tags.lastChild.getAttribute('data-type');
+      const ofWhat = tags.lastChild.innerText;
+      return findRecepiesFromSpecs(data, type, ofWhat);
     } 
-    else if (tagsCounter <= 0){ return data }
+    else {
+      return data;
+    }
 }
 
 // find the recepies that have the spec requested
 function findRecepiesFromSpecs(data, from, search) {
-    let res = data.filter(Boolean).map((rece) => {
-        const {ingredients, appliance, ustensils} = rece 
-        if (from == 'Ingredients' && ingredients.find(o => o.ingredient.toLowerCase().includes(search.toLowerCase()))) {
-            return rece
-        }  else if (from.toLowerCase() == 'appareils' && appliance.toLowerCase() == search.toLowerCase()){
-            return rece
-        } else if (from.toLowerCase() == 'utensiles' && ustensils.includes(search.toLowerCase())){
-            return rece
-        }
-    })
-    return res
+    return data.filter(rece => {
+      const { ingredients, appliance, ustensils } = rece;
+      switch (from.toLowerCase()) {
+        case 'ingredients':
+          return ingredients.some(o => o.ingredient.toLowerCase().includes(search.toLowerCase()));
+        case 'appareils':
+          return appliance.toLowerCase() === search.toLowerCase();
+        case 'utensiles':
+          return ustensils.some(u => u.toLowerCase() === search.toLowerCase());
+        default:
+          return false;
+      }
+    });
 }
 
 function relevantRecepies(food) {
