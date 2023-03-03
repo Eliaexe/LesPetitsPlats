@@ -12,6 +12,7 @@ function search(data) {
     })
 }
 
+//actual algo for sorting stuff BUT WHIT LOOPS
 function bigSearch(data, str) {
     const processedData = processingData(data);
     const printThis = [];
@@ -31,7 +32,8 @@ function bigSearch(data, str) {
   
     return printThis;
 }
-  
+
+//prepare data whit the tags sorting
 function processingData(data) {
     const tags = document.getElementById("specificSelected");
     const tagsCounter = tags.children.length;
