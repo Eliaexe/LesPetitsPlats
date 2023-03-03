@@ -310,7 +310,7 @@ main{
 }
 
 .scrollBar{
-    scrollbar-width: 2vw;
+    scrollbar-width: 5px;
     scrollbar-color: #fff rgba(255, 255, 255, 0);
 }
 
